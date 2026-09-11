@@ -1,0 +1,265 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/noto-sans-bengali/index.css';
+@import './theme.css';
+
+/* Class-based dark mode (html.dark / html.light) and a density variant. */
+@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant compact (&:where([data-density='compact'], [data-density='compact'] *));
+
+/*
+ * Map the global tokens from theme.css onto Tailwind's theme.
+ * The default Tailwind palette is removed on purpose so that every color in
+ * the UI comes from theme.css.
+ */
+@theme inline {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-2: var(--c-surface-2);
+  --color-surface-3: var(--c-surface-3);
+  --color-overlay: var(--c-overlay);
+
+  --color-border: var(--c-border);
+  --color-border-strong: var(--c-border-strong);
+
+  --color-fg: var(--c-fg);
+  --color-fg-muted: var(--c-fg-muted);
+  --color-fg-subtle: var(--c-fg-subtle);
+
+  --color-primary: var(--c-primary);
+  --color-primary-hover: var(--c-primary-hover);
+  --color-primary-fg: var(--c-primary-fg);
+  --color-primary-text: var(--c-primary-text);
+
+  --color-success: var(--c-success);
+  --color-success-hover: var(--c-success-hover);
+  --color-success-fg: var(--c-success-fg);
+  --color-success-text: var(--c-success-text);
+
+  --color-danger: var(--c-danger);
+  --color-danger-hover: var(--c-danger-hover);
+  --color-danger-fg: var(--c-danger-fg);
+  --color-danger-text: var(--c-danger-text);
+
+  --color-warning: var(--c-warning);
+  --color-warning-hover: var(--c-warning-hover);
+  --color-warning-fg: var(--c-warning-fg);
+  --color-warning-text: var(--c-warning-text);
+
+  --color-info: var(--c-info);
+  --color-info-fg: var(--c-info-fg);
+  --color-info-text: var(--c-info-text);
+
+  --color-status-available: var(--c-status-available);
+  --color-status-occupied: var(--c-status-occupied);
+  --color-status-reserved: var(--c-status-reserved);
+  --color-status-waiting: var(--c-status-waiting);
+
+  --color-tint-orange: var(--c-tint-orange);
+  --color-tint-red: var(--c-tint-red);
+  --color-tint-amber: var(--c-tint-amber);
+  --color-tint-green: var(--c-tint-green);
+  --color-tint-teal: var(--c-tint-teal);
+  --color-tint-blue: var(--c-tint-blue);
+  --color-tint-violet: var(--c-tint-violet);
+  --color-tint-pink: var(--c-tint-pink);
+
+  --color-focus: var(--c-focus);
+  --color-chart-1: var(--c-chart-1);
+  --color-chart-1-hover: var(--c-chart-1-hover);
+  --color-chart-grid: var(--c-chart-grid);
+  --color-paper: var(--c-paper);
+  --color-paper-fg: var(--c-paper-fg);
+  --color-swatch-blue: var(--c-swatch-blue);
+  --color-swatch-green: var(--c-swatch-green);
+  --color-swatch-violet: var(--c-swatch-violet);
+  --color-swatch-orange: var(--c-swatch-orange);
+  --color-swatch-teal: var(--c-swatch-teal);
+
+  --color-scene-shadow: var(--c-scene-shadow);
+  --color-scene-table: var(--c-scene-table);
+  --color-scene-table-shine: var(--c-scene-table-shine);
+  --color-scene-table-edge: var(--c-scene-table-edge);
+  --color-scene-table-side: var(--c-scene-table-side);
+  --color-scene-leg: var(--c-scene-leg);
+  --color-scene-chair: var(--c-scene-chair);
+  --color-scene-chair-back: var(--c-scene-chair-back);
+  --color-scene-chair-side: var(--c-scene-chair-side);
+  --color-scene-plate: var(--c-scene-plate);
+  --color-scene-plate-rim: var(--c-scene-plate-rim);
+  --color-scene-food: var(--c-scene-food);
+  --color-scene-paper: var(--c-scene-paper);
+  --color-scene-pot: var(--c-scene-pot);
+  --color-scene-leaf: var(--c-scene-leaf);
+  --color-scene-skin-1: var(--c-scene-skin-1);
+  --color-scene-skin-2: var(--c-scene-skin-2);
+  --color-scene-skin-3: var(--c-scene-skin-3);
+  --color-scene-hair-1: var(--c-scene-hair-1);
+  --color-scene-hair-2: var(--c-scene-hair-2);
+  --color-scene-shirt-1: var(--c-scene-shirt-1);
+  --color-scene-shirt-2: var(--c-scene-shirt-2);
+  --color-scene-shirt-3: var(--c-scene-shirt-3);
+  --color-scene-shirt-4: var(--c-scene-shirt-4);
+  --color-scene-shirt-5: var(--c-scene-shirt-5);
+  --color-scene-shirt-6: var(--c-scene-shirt-6);
+
+  --font-sans: var(--app-font-sans);
+  --font-mono: var(--app-font-mono);
+
+  --radius-control: var(--app-radius-control);
+  --radius-card: var(--app-radius-card);
+
+  --spacing-touch: var(--app-touch-min);
+  --spacing-sidebar: var(--app-sidebar-width);
+  --spacing-header: var(--app-header-height);
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  html {
+    font-family: var(--app-font-sans);
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    margin: 0;
+    overflow: hidden;
+    background-color: var(--c-bg);
+    color: var(--c-fg);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    /* POS surfaces behave like an app, not a document. */
+    user-select: none;
+  }
+
+  /* Bangla glyphs have tall vowel signs; give them more room. */
+  html[lang='bn'] body {
+    line-height: 1.6;
+  }
+
+  input,
+  textarea,
+  [contenteditable='true'],
+  .selectable {
+    user-select: text;
+  }
+
+  button,
+  [role='button'] {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  button:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--c-focus);
+    outline-offset: 2px;
+  }
+
+  /* Hide number spinners; the app has its own large +/- controls. */
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--c-border-strong);
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: var(--c-fg-subtle);
+  }
+}
+
+@layer utilities {
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Subtle motion only — POS screens must feel instant. */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

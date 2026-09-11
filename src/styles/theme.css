@@ -1,0 +1,296 @@
+/* ==========================================================================
+   GLOBAL THEME TOKENS
+   --------------------------------------------------------------------------
+   This is the ONE place to change the look of the application.
+   Every component uses these semantic tokens through Tailwind classes such
+   as `bg-surface`, `text-fg-muted`, `bg-primary`, `text-status-occupied`.
+
+   - Plain hex / rgb values are fine (Tailwind opacity modifiers like
+     `bg-primary/15` work with any color format).
+   - `:root` / `.dark`  → Dark theme (the default)
+   - `.light`           → Light theme
+   - Receipts/KOT always print black on white and use the "paper" tokens.
+   ========================================================================== */
+
+:root {
+  /* Typography — bundled Bangla font first, then system Bangla fonts. */
+  --app-font-sans: 'Noto Sans Bengali Variable', 'Noto Sans Bengali', 'Nirmala UI', 'Vrinda', 'Segoe UI', system-ui,
+    -apple-system, sans-serif;
+  --app-font-mono: ui-monospace, 'Cascadia Mono', 'Consolas', 'SFMono-Regular', monospace;
+
+  /* Shape */
+  --app-radius-control: 0.75rem;
+  --app-radius-card: 1rem;
+
+  /* Sizes (touch targets) */
+  --app-touch-min: 48px;
+  --app-sidebar-width: 88px;
+  --app-header-height: 64px;
+
+  /* Menu/table card width multiplier (Settings → Appearance → Card size). */
+  --app-card-scale: 1;
+}
+
+/* ------------------------------ Dark (default) --------------------------- */
+:root,
+:root.dark {
+  color-scheme: dark;
+
+  --c-bg: #0e1116;
+  --c-surface: #161a21;
+  --c-surface-2: #1d222b;
+  --c-surface-3: #272d38;
+  --c-overlay: rgb(3 6 10 / 0.72);
+
+  --c-border: #2a303c;
+  --c-border-strong: #3d4555;
+
+  --c-fg: #eef1f6;
+  --c-fg-muted: #a6afbe;
+  --c-fg-subtle: #768092;
+
+  --c-primary: #2563eb;
+  --c-primary-hover: #3b76f0;
+  --c-primary-fg: #ffffff;
+  --c-primary-text: #86b3ff;
+
+  --c-success: #16a34a;
+  --c-success-hover: #1db455;
+  --c-success-fg: #ffffff;
+  --c-success-text: #4ade80;
+
+  --c-danger: #dc2626;
+  --c-danger-hover: #e64141;
+  --c-danger-fg: #ffffff;
+  --c-danger-text: #f87171;
+
+  --c-warning: #eab308;
+  --c-warning-hover: #f5c02a;
+  --c-warning-fg: #1a1400;
+  --c-warning-text: #facc15;
+
+  --c-info: #0891b2;
+  --c-info-fg: #ffffff;
+  --c-info-text: #38d3f0;
+
+  /* Table status colors (text-safe on surfaces). */
+  --c-status-available: #4ade80;
+  --c-status-occupied: #f87171;
+  --c-status-reserved: #facc15;
+  --c-status-waiting: #fbbf24;
+
+  /* Category tints (menu placeholders). */
+  --c-tint-orange: #fb923c;
+  --c-tint-red: #f87171;
+  --c-tint-amber: #fbbf24;
+  --c-tint-green: #4ade80;
+  --c-tint-teal: #2dd4bf;
+  --c-tint-blue: #60a5fa;
+  --c-tint-violet: #a78bfa;
+  --c-tint-pink: #f472b6;
+
+  --c-focus: #60a5fa;
+
+  /* Report charts — one validated series hue per theme (≥3:1 on surface),
+     a lifted step for hover, and hairline gridlines one step off surface. */
+  --c-chart-1: #4d8df7;
+  --c-chart-1-hover: #7aaafa;
+  --c-chart-grid: #272d38;
+
+  /* Printed documents and in-app receipt preview. */
+  --c-paper: #ffffff;
+  --c-paper-fg: #000000;
+
+  /* Accent swatches in Settings → Appearance (each accent's button color). */
+  --c-swatch-blue: #2563eb;
+  --c-swatch-green: #047857;
+  --c-swatch-violet: #7c3aed;
+  --c-swatch-orange: #c2410c;
+  --c-swatch-teal: #0f766e;
+
+  /* Table illustrations (Tables page). Status is never shown by these
+     colors alone — every card also has a status label and icon. */
+  --c-scene-shadow: rgb(0 0 0 / 0.34);
+  --c-scene-table: #8a5a3b;
+  --c-scene-table-shine: #9c6a48;
+  --c-scene-table-edge: #6e452d;
+  --c-scene-table-side: #5a3924;
+  --c-scene-leg: #4b2f1f;
+  --c-scene-chair: #4d5566;
+  --c-scene-chair-back: #3e4555;
+  --c-scene-chair-side: #323845;
+  --c-scene-plate: #f4f4f2;
+  --c-scene-plate-rim: #cfd2d6;
+  --c-scene-food: #e0983f;
+  --c-scene-paper: #fbfbf8;
+  --c-scene-pot: #b86b45;
+  --c-scene-leaf: #4c9a6a;
+  --c-scene-skin-1: #f2c9a4;
+  --c-scene-skin-2: #d6a077;
+  --c-scene-skin-3: #a66b45;
+  --c-scene-hair-1: #2a211d;
+  --c-scene-hair-2: #5a3b2b;
+  --c-scene-shirt-1: #5b7fd6;
+  --c-scene-shirt-2: #8b6fd6;
+  --c-scene-shirt-3: #2e9e95;
+  --c-scene-shirt-4: #d9784f;
+  --c-scene-shirt-5: #c86b98;
+  --c-scene-shirt-6: #6f8f4f;
+}
+
+/* --------------------------------- Light --------------------------------- */
+:root.light {
+  color-scheme: light;
+
+  --c-bg: #eef1f5;
+  --c-surface: #ffffff;
+  --c-surface-2: #f3f5f8;
+  --c-surface-3: #e5e9ef;
+  --c-overlay: rgb(15 23 42 / 0.45);
+
+  --c-border: #d9dee7;
+  --c-border-strong: #b9c1ce;
+
+  --c-fg: #0f172a;
+  --c-fg-muted: #475569;
+  --c-fg-subtle: #64748b;
+
+  --c-primary: #2563eb;
+  --c-primary-hover: #1d4ed8;
+  --c-primary-fg: #ffffff;
+  --c-primary-text: #1d4ed8;
+
+  --c-success: #16a34a;
+  --c-success-hover: #15803d;
+  --c-success-fg: #ffffff;
+  --c-success-text: #15803d;
+
+  --c-danger: #dc2626;
+  --c-danger-hover: #b91c1c;
+  --c-danger-fg: #ffffff;
+  --c-danger-text: #b91c1c;
+
+  --c-warning: #eab308;
+  --c-warning-hover: #ca9a06;
+  --c-warning-fg: #1a1400;
+  --c-warning-text: #a16207;
+
+  --c-info: #0891b2;
+  --c-info-fg: #ffffff;
+  --c-info-text: #0e7490;
+
+  --c-status-available: #15803d;
+  --c-status-occupied: #b91c1c;
+  --c-status-reserved: #a16207;
+  --c-status-waiting: #b45309;
+
+  --c-tint-orange: #c2410c;
+  --c-tint-red: #b91c1c;
+  --c-tint-amber: #b45309;
+  --c-tint-green: #15803d;
+  --c-tint-teal: #0f766e;
+  --c-tint-blue: #1d4ed8;
+  --c-tint-violet: #6d28d9;
+  --c-tint-pink: #be185d;
+
+  --c-focus: #2563eb;
+
+  --c-chart-1: #2563eb;
+  --c-chart-1-hover: #1d4ed8;
+  --c-chart-grid: #e5e9ef;
+
+  --c-paper: #ffffff;
+  --c-paper-fg: #000000;
+
+  --c-swatch-blue: #2563eb;
+  --c-swatch-green: #047857;
+  --c-swatch-violet: #7c3aed;
+  --c-swatch-orange: #c2410c;
+  --c-swatch-teal: #0f766e;
+
+  --c-scene-shadow: rgb(15 23 42 / 0.16);
+  --c-scene-table: #b98356;
+  --c-scene-table-shine: #c9936a;
+  --c-scene-table-edge: #95623d;
+  --c-scene-table-side: #7c4f30;
+  --c-scene-leg: #5f3d27;
+  --c-scene-chair: #8d97a8;
+  --c-scene-chair-back: #76808f;
+  --c-scene-chair-side: #646d7b;
+  --c-scene-plate: #ffffff;
+  --c-scene-plate-rim: #cfd2d6;
+  --c-scene-food: #e0983f;
+  --c-scene-paper: #ffffff;
+  --c-scene-pot: #b86b45;
+  --c-scene-leaf: #3f8a5c;
+  --c-scene-skin-1: #f2c9a4;
+  --c-scene-skin-2: #d6a077;
+  --c-scene-skin-3: #a66b45;
+  --c-scene-hair-1: #2a211d;
+  --c-scene-hair-2: #5a3b2b;
+  --c-scene-shirt-1: #4f73cc;
+  --c-scene-shirt-2: #8263cf;
+  --c-scene-shirt-3: #25918a;
+  --c-scene-shirt-4: #d06c43;
+  --c-scene-shirt-5: #bd5f8d;
+  --c-scene-shirt-6: #648446;
+}
+
+/* ----------------------------- Accent colors ----------------------------- *
+ * html[data-accent] (Settings → Appearance) replaces the primary color.
+ * Blue is the default defined above. Every set was contrast-checked: white
+ * on the button color and hover ≥ 4.5:1, accent text on surface and
+ * surface-2 ≥ 4.5:1, focus ring on surface ≥ 3:1. Dark values come first;
+ * the `.light` rules are more specific and win in the light theme.
+ * ------------------------------------------------------------------------- */
+:root[data-accent='green'] {
+  --c-primary: #047857;
+  --c-primary-hover: #05855f;
+  --c-primary-text: #4ade9b;
+  --c-focus: #34d399;
+}
+:root.light[data-accent='green'] {
+  --c-primary: #047857;
+  --c-primary-hover: #065f46;
+  --c-primary-text: #047857;
+  --c-focus: #047857;
+}
+
+:root[data-accent='violet'] {
+  --c-primary: #7c3aed;
+  --c-primary-hover: #8546ef;
+  --c-primary-text: #c4b5fd;
+  --c-focus: #a78bfa;
+}
+:root.light[data-accent='violet'] {
+  --c-primary: #7c3aed;
+  --c-primary-hover: #6d28d9;
+  --c-primary-text: #6d28d9;
+  --c-focus: #7c3aed;
+}
+
+:root[data-accent='orange'] {
+  --c-primary: #c2410c;
+  --c-primary-hover: #cf4a12;
+  --c-primary-text: #fdba74;
+  --c-focus: #fb923c;
+}
+:root.light[data-accent='orange'] {
+  --c-primary: #c2410c;
+  --c-primary-hover: #9a3412;
+  --c-primary-text: #c2410c;
+  --c-focus: #c2410c;
+}
+
+:root[data-accent='teal'] {
+  --c-primary: #0f766e;
+  --c-primary-hover: #118178;
+  --c-primary-text: #5eead4;
+  --c-focus: #2dd4bf;
+}
+:root.light[data-accent='teal'] {
+  --c-primary: #0f766e;
+  --c-primary-hover: #115e59;
+  --c-primary-text: #0f766e;
+  --c-focus: #0f766e;
+}
