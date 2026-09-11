@@ -1,3 +1,4 @@
+import { APP_CONFIG } from '@/config/app.config';
 import { message, type TranslationKey } from '@/i18n/keys';
 import { usePosStore } from '@/store/posStore';
 import { useSettingsStore } from '@/store/settingsStore';
@@ -59,7 +60,7 @@ export async function printDocumentNow(document: PrintDocument, successKey: Tran
 export async function saveDocumentPdf(document: PrintDocument, target?: PrintTarget): Promise<boolean> {
   const result = await saveDocumentAsPdf(document, target);
   if (result.ok) {
-    if (result.filePath) toast.success(message('print.pdfSaved', { path: result.filePath }), 8000);
+    if (result.filePath) toast.success(message('print.pdfSaved', { path: result.filePath }), APP_CONFIG.ui.longToastDurationMs);
     return true;
   }
   if (result.reason === 'failed') toast.error(message('print.pdfFailed'));

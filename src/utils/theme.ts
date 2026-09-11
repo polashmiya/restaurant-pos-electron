@@ -1,4 +1,13 @@
-import { CARD_SCALES, TEXT_SCALES } from '@/config/app.config';
+import {
+  ACCENT_COLORS,
+  APP_CONFIG,
+  CARD_SCALES,
+  CARD_SIZES,
+  LAYOUT_DENSITIES,
+  TEXT_SCALES,
+  TEXT_SIZES,
+} from '@/config/app.config';
+import { createDefaultUIPreferences } from '@/data/defaults';
 import type { ResolvedTheme, Theme, UIPreferences } from '@/types';
 
 const DARK_QUERY = '(prefers-color-scheme: dark)';
@@ -47,6 +56,53 @@ export function applyAppearance(ui: AppearancePreferences): void {
   root.dataset.accent = ui.accentColor;
   root.style.fontSize = `${(TEXT_SCALES[ui.textSize] ?? 1) * 100}%`;
   root.style.setProperty('--app-card-scale', String(CARD_SCALES[ui.cardSize] ?? 1));
+}
+
+/* ------------------------------------------------------------------------ *
+ * Startup look. Settings arrive from the main process asynchronously, so a
+ * copy of the look is kept in localStorage and applied before the first
+ * render — the loading screen already shows the chosen theme, accent and
+ * size. The saved settings remain the source of truth.
+ * ------------------------------------------------------------------------ */
+
+const LOOK_STORAGE_KEY = 'restaurant-pos-look';
+const THEMES: readonly Theme[] = ['dark', 'light', 'system'];
+
+export interface RememberedLook extends AppearancePreferences {
+  theme: Theme;
+}
+
+function pick<T extends string>(value: unknown, allowed: readonly T[], fallback: T): T {
+  return (allowed as readonly unknown[]).includes(value) ? (value as T) : fallback;
+}
+
+export function rememberLook(look: RememberedLook): void {
+  try {
+    const { theme, density, textSize, cardSize, accentColor } = look;
+    window.localStorage.setItem(LOOK_STORAGE_KEY, JSON.stringify({ theme, density, textSize, cardSize, accentColor }));
+  } catch {
+    // Storage blocked or full — only the loading screen's colors are affected.
+  }
+}
+
+/** Applies the look remembered from the last session; unknown values fall back to the defaults. */
+export function applyRememberedLook(): void {
+  let stored: Record<string, unknown> | null = null;
+  try {
+    const parsed: unknown = JSON.parse(window.localStorage.getItem(LOOK_STORAGE_KEY) ?? 'null');
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) stored = parsed as Record<string, unknown>;
+  } catch {
+    return;
+  }
+  if (!stored) return;
+  const defaults = createDefaultUIPreferences();
+  applyTheme(pick(stored.theme, THEMES, APP_CONFIG.defaults.theme));
+  applyAppearance({
+    density: pick(stored.density, LAYOUT_DENSITIES, defaults.density),
+    textSize: pick(stored.textSize, TEXT_SIZES, defaults.textSize),
+    cardSize: pick(stored.cardSize, CARD_SIZES, defaults.cardSize),
+    accentColor: pick(stored.accentColor, ACCENT_COLORS, defaults.accentColor),
+  });
 }
 
 export function appearanceChanged(previous: AppearancePreferences, next: AppearancePreferences): boolean {

@@ -37,6 +37,8 @@ font-size:12px;line-height:1.4;-webkit-print-color-adjust:exact;print-color-adju
 .pos-doc .kot-note{display:block;font-size:12.5px;font-weight:600;font-style:italic;margin-top:1px}
 .pos-doc .badge{display:inline-block;border:1.5px solid #000;padding:0 6px;font-weight:800;margin:2px 2px 0}
 .pos-doc .thanks{font-size:15px;font-weight:800;margin-top:4px}
+.pos-doc .lg{font-size:16px}
+.pos-doc .gap-top{margin-top:6px}
 `;
 
 /** Page setup for a print job of the given roll width. */

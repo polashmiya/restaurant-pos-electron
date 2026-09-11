@@ -1,7 +1,8 @@
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PrintDialog } from '@/components/printing/PrintDialog';
 import { applyStoreData } from '@/services/bootstrap';
+import { getPrintFontCss } from '@/services/printFonts';
 import { setStorageAdapter } from '@/services/storage';
 import { useUIStore } from '@/store/uiStore';
 import type { PrintDocument } from '@/types';
@@ -38,6 +39,11 @@ function renderDialog(onDone = vi.fn()) {
   return onDone;
 }
 
+// The embedded print font is transformed on first use, which is slow when the
+// whole suite runs in parallel. Load it once so no test pays for it — and a
+// slow print can never finish after its test, inside the next one.
+beforeAll(() => getPrintFontCss(), 30_000);
+
 beforeEach(() => {
   const storage = createMemoryStorage();
   setStorageAdapter(storage);
@@ -51,7 +57,7 @@ afterEach(() => {
   Reflect.deleteProperty(window, 'electronAPI');
 });
 
-describe('PrintDialog', () => {
+describe('PrintDialog', { timeout: 15_000 }, () => {
   it('previews the document and prints it on the chosen printer and copies', async () => {
     const { receipt } = installApi();
     const onDone = renderDialog();
@@ -60,13 +66,13 @@ describe('PrintDialog', () => {
     expect(screen.getByText('Polash')).toBeTruthy();
 
     const printer = screen.getByLabelText('প্রিন্টার') as HTMLSelectElement;
-    await waitFor(() => expect(printer.options).toHaveLength(3));
+    await waitFor(() => expect(printer.options).toHaveLength(3), { timeout: 5000 });
     expect(printer.value).toBe('');
     fireEvent.change(printer, { target: { value: 'Kitchen' } });
     fireEvent.click(screen.getByRole('radio', { name: '2' }));
     fireEvent.click(screen.getByRole('button', { name: 'প্রিন্ট' }));
 
-    await waitFor(() => expect(onDone).toHaveBeenCalledOnce());
+    await waitFor(() => expect(onDone).toHaveBeenCalledOnce(), { timeout: 5000 });
     expect(receipt.mock.calls[0]?.[1]).toMatchObject({ printerName: 'Kitchen', copies: 2, paperWidth: '80mm' });
     expect(useUIStore.getState().toasts.at(-1)?.message.key).toBe('print.reportPrinted');
   });
@@ -76,7 +82,7 @@ describe('PrintDialog', () => {
     const onDone = renderDialog();
 
     fireEvent.click(screen.getByRole('button', { name: 'PDF হিসেবে সংরক্ষণ' }));
-    await waitFor(() => expect(onDone).toHaveBeenCalledOnce());
+    await waitFor(() => expect(onDone).toHaveBeenCalledOnce(), { timeout: 5000 });
     expect(savePdf.mock.calls[0]?.[1]).toEqual({ paperWidth: '80mm', fileName: 'shift-report-2026-09-10-2135' });
     expect(receipt).not.toHaveBeenCalled();
     expect(useUIStore.getState().toasts.at(-1)?.message).toMatchObject({ key: 'print.pdfSaved', params: { path: 'C:\\Docs\\shift.pdf' } });

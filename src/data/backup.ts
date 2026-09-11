@@ -1,10 +1,11 @@
+import { APP_CONFIG } from '@/config/app.config';
 import type { BackupFile, BackupSummary, StoreSchema } from '@/types';
 import { mergeWithDefaultSettings } from './defaults';
 import { isPlainObject } from './storeKeys';
 import { isCategory, isDiningTable, isMenuItem, isOrder, isOrderCounter, isShift } from './validators';
 
 export const BACKUP_APP_ID = 'restaurant-pos';
-export const BACKUP_FORMAT_VERSION = 1;
+export const BACKUP_FORMAT_VERSION = APP_CONFIG.backup.formatVersion;
 
 export function createBackupFile(data: StoreSchema, appVersion: string, now: Date): BackupFile {
   return {

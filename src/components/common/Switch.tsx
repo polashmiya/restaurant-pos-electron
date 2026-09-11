@@ -42,7 +42,7 @@ export function Switch({ checked, onCheckedChange, label, description, disabled,
         <span
           aria-hidden
           className={cn(
-            'inline-block size-6 rounded-full bg-white shadow transition-transform duration-150',
+            'inline-block size-6 rounded-full bg-knob shadow transition-transform duration-150',
             checked ? 'translate-x-7 rtl:-translate-x-7' : 'translate-x-1 rtl:-translate-x-1',
           )}
         />

@@ -1,3 +1,4 @@
+import { APP_CONFIG } from '@/config/app.config';
 import { message } from '@/i18n/keys';
 import { getFormatContext } from '@/store/settingsStore';
 import { confirmAction, toast } from '@/store/uiStore';
@@ -17,7 +18,7 @@ export async function exportData(): Promise<void> {
   if (!api) return;
   try {
     const result = await api.data.exportBackup();
-    if (result.ok) toast.success(message('settings.data.exported', { path: result.filePath }), 8000);
+    if (result.ok) toast.success(message('settings.data.exported', { path: result.filePath }), APP_CONFIG.ui.longToastDurationMs);
     else if (result.reason === 'failed') toast.error(message('errors.exportFailed'));
   } catch (error) {
     logError('export', error);

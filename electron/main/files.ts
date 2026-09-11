@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import { APP_CONFIG } from '@/config/app.config';
 
 const RESERVED_FILE_NAME_CHARS = new Set(['<', '>', ':', '"', '/', '\\', '|', '?', '*']);
 
@@ -15,7 +16,7 @@ export function safeFileName(fileName: string, extension: string, fallback: stri
     .trim();
   const suffix = `.${extension}`;
   const name = (base.toLowerCase().endsWith(suffix) ? base.slice(0, -suffix.length) : base) || fallback;
-  return `${name.slice(0, 100)}${suffix}`;
+  return `${name.slice(0, APP_CONFIG.ipcLimits.savedFileName)}${suffix}`;
 }
 
 /** Writes via a temp file + rename so a partial file is never left behind. */

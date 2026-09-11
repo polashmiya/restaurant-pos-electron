@@ -72,7 +72,7 @@ export function CartActions() {
         onClick={() => void requestPayment()}
         disabled={!hasItems || processing}
         loading={processing}
-        iconEnd={<Kbd className="border-white/40 bg-white/15 text-white">{KEYBOARD_SHORTCUTS.payment.label}</Kbd>}
+        iconEnd={<Kbd tone="inherit">{KEYBOARD_SHORTCUTS.payment.label}</Kbd>}
       >
         {t('cart.payAndPrint')}
       </Button>

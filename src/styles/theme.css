@@ -91,6 +91,9 @@
 
   --c-focus: #60a5fa;
 
+  /* Switch knob (on the accent color when on, on surface-3 when off). */
+  --c-knob: #ffffff;
+
   /* Report charts — one validated series hue per theme (≥3:1 on surface),
      a lifted step for hover, and hairline gridlines one step off surface. */
   --c-chart-1: #4d8df7;
@@ -195,6 +198,8 @@
 
   --c-focus: #2563eb;
 
+  --c-knob: #ffffff;
+
   --c-chart-1: #2563eb;
   --c-chart-1-hover: #1d4ed8;
   --c-chart-grid: #e5e9ef;
@@ -237,23 +242,29 @@
 }
 
 /* ----------------------------- Accent colors ----------------------------- *
- * html[data-accent] (Settings → Appearance) replaces the primary color.
- * Blue is the default defined above. Every set was contrast-checked: white
- * on the button color and hover ≥ 4.5:1, accent text on surface and
- * surface-2 ≥ 4.5:1, focus ring on surface ≥ 3:1. Dark values come first;
- * the `.light` rules are more specific and win in the light theme.
+ * html[data-accent] (Settings → Appearance) replaces the primary color and
+ * the report chart color. Blue is the default defined above. Every set was
+ * checked: white on the button color and hover ≥ 4.5:1, accent text on
+ * surface and surface-2 ≥ 4.5:1, focus ring on surface ≥ 3:1; the chart
+ * color passes the dataviz validator for its mode (lightness band, chroma
+ * floor, ≥ 3:1 on surface) and its hover step stays ≥ 3:1. Dark values come
+ * first; the `.light` rules are more specific and win in the light theme.
  * ------------------------------------------------------------------------- */
 :root[data-accent='green'] {
   --c-primary: #047857;
   --c-primary-hover: #05855f;
   --c-primary-text: #4ade9b;
   --c-focus: #34d399;
+  --c-chart-1: #2fa877;
+  --c-chart-1-hover: #56c093;
 }
 :root.light[data-accent='green'] {
   --c-primary: #047857;
   --c-primary-hover: #065f46;
   --c-primary-text: #047857;
   --c-focus: #047857;
+  --c-chart-1: #047857;
+  --c-chart-1-hover: #065f46;
 }
 
 :root[data-accent='violet'] {
@@ -261,12 +272,16 @@
   --c-primary-hover: #8546ef;
   --c-primary-text: #c4b5fd;
   --c-focus: #a78bfa;
+  --c-chart-1: #9a7cf0;
+  --c-chart-1-hover: #b39bf4;
 }
 :root.light[data-accent='violet'] {
   --c-primary: #7c3aed;
   --c-primary-hover: #6d28d9;
   --c-primary-text: #6d28d9;
   --c-focus: #7c3aed;
+  --c-chart-1: #7c3aed;
+  --c-chart-1-hover: #6d28d9;
 }
 
 :root[data-accent='orange'] {
@@ -274,12 +289,16 @@
   --c-primary-hover: #cf4a12;
   --c-primary-text: #fdba74;
   --c-focus: #fb923c;
+  --c-chart-1: #dc6c32;
+  --c-chart-1-hover: #e8895a;
 }
 :root.light[data-accent='orange'] {
   --c-primary: #c2410c;
   --c-primary-hover: #9a3412;
   --c-primary-text: #c2410c;
   --c-focus: #c2410c;
+  --c-chart-1: #c2410c;
+  --c-chart-1-hover: #9a3412;
 }
 
 :root[data-accent='teal'] {
@@ -287,10 +306,15 @@
   --c-primary-hover: #118178;
   --c-primary-text: #5eead4;
   --c-focus: #2dd4bf;
+  --c-chart-1: #22a397;
+  --c-chart-1-hover: #4dbdb2;
 }
 :root.light[data-accent='teal'] {
   --c-primary: #0f766e;
   --c-primary-hover: #115e59;
   --c-primary-text: #0f766e;
   --c-focus: #0f766e;
+  /* teal-700 reads gray as a chart fill (chroma < 0.10); one step lighter */
+  --c-chart-1: #0d9488;
+  --c-chart-1-hover: #0f766e;
 }

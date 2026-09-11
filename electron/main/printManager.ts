@@ -26,7 +26,6 @@ import { getMainWindow } from './windowManager';
    ========================================================================== */
 
 const MM_PER_CSS_PIXEL = 25.4 / 96;
-const TEAR_OFF_MARGIN_MM = 8;
 
 /** Folder of the last saved PDF, suggested again for the next one. */
 let lastPdfDirectory: string | null = null;
@@ -114,7 +113,7 @@ async function measureContentHeightMm(window: BrowserWindow): Promise<number> {
     true,
   )) as number;
   const safePx = Number.isFinite(heightPx) && heightPx > 0 ? heightPx : 600;
-  return Math.ceil(safePx * MM_PER_CSS_PIXEL) + TEAR_OFF_MARGIN_MM;
+  return Math.ceil(safePx * MM_PER_CSS_PIXEL) + APP_CONFIG.print.tearOffMarginMm;
 }
 
 function renderPdf(html: string, paperWidth: PaperWidth, title: string): Promise<Buffer> {
@@ -169,11 +168,11 @@ function printSilently(window: BrowserWindow, options: PrintJobOptions, heightMm
         silent: true,
         printBackground: true,
         deviceName: options.printerName || undefined,
-        copies: Math.min(Math.max(Math.trunc(options.copies) || 1, 1), 5),
+        copies: Math.min(Math.max(Math.trunc(options.copies) || 1, 1), APP_CONFIG.print.maxCopies),
         margins: { marginType: 'none' },
         pageSize: {
           width: PAPER_DIMENSIONS[options.paperWidth].paperMm * 1000,
-          height: Math.max(heightMm, 60) * 1000,
+          height: Math.max(heightMm, APP_CONFIG.print.minPageHeightMm) * 1000,
         },
       },
       (success, failureReason) => {

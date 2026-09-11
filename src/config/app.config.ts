@@ -64,6 +64,8 @@ export const APP_CONFIG = {
     maxGuests: 50,
     /** Quick-pick buttons in the guest count dialog (1…n; larger tables show up to their seats). */
     guestQuickPicks: 12,
+    /** Pause after the last change before the order on the POS screen is saved. */
+    draftSaveDelayMs: 250,
   },
 
   payment: {
@@ -72,15 +74,21 @@ export const APP_CONFIG = {
     /** Quick percentage buttons in the discount dialog. */
     discountPresets: [5, 10, 15, 20],
     maxAmount: 10_000_000,
+    /** Longest amount typed on the payment keypad (digits and decimal point). */
+    maxAmountLength: 10,
   },
 
   ui: {
     toastDurationMs: 3500,
     errorToastDurationMs: 6000,
+    /** Messages worth a second look (saved file paths, sample data loaded). */
+    longToastDurationMs: 8000,
     clockTickMs: 10_000,
     orderHistoryPageSize: 50,
     /** Longest edge (px) of menu images stored locally. */
     menuImageMaxSize: 320,
+    /** Largest photo file accepted when picking a menu image. */
+    menuImageMaxSourceBytes: 5 * 1024 * 1024,
     /** Use a 12-hour clock (hh:mm AM/PM). */
     hour12: true,
   },
@@ -102,6 +110,8 @@ export const APP_CONFIG = {
     sampleDays: 60,
     /** File name of the CSV export and of the sales report saved as PDF. */
     fileNamePrefix: 'sales-report',
+    /** Longest CSV export the main process accepts (characters). */
+    maxCsvChars: 50 * 1024 * 1024,
   },
 
   print: {
@@ -109,6 +119,12 @@ export const APP_CONFIG = {
     jobTimeoutMs: 30_000,
     /** Copy choices in the print dialog and in Settings → Printer. */
     copyOptions: [1, 2, 3],
+    /** Most copies of one print job. */
+    maxCopies: 5,
+    /** Blank paper fed after the last line so the ticket can be torn off. */
+    tearOffMarginMm: 8,
+    /** Shortest page sent to a printer (some drivers reject tiny pages). */
+    minPageHeightMm: 60,
     /** Suggested "Save as PDF" file names (the order number or date is appended). */
     fileNamePrefixes: {
       receipt: 'receipt',
@@ -123,10 +139,31 @@ export const APP_CONFIG = {
     fileNamePrefix: 'restaurant-pos-backup',
     /** Automatic safety copies kept before import/reset. */
     maxAutoBackups: 10,
+    /** Format version written into every backup file (import accepts only this one). */
+    formatVersion: 1,
+    /** Largest backup file that can be imported. */
+    maxImportBytes: 512 * 1024 * 1024,
+    /** How long a checked backup waits for the user to confirm the import. */
+    importConfirmTtlMs: 10 * 60 * 1000,
   },
 
   /** Maximum size of a print document sent to the main process. */
   maxPrintHtmlBytes: 8 * 1024 * 1024,
+
+  /** Longest text the main process accepts per IPC argument (the renderer is never trusted). */
+  ipcLimits: {
+    text: 500,
+    title: 200,
+    fileName: 120,
+    token: 100,
+    /** Longest name (without extension) for a file the app suggests or writes. */
+    savedFileName: 100,
+  },
+
+  diagnostics: {
+    /** logs/main.log is renamed to main.log.1 when it grows past this size. */
+    maxLogBytes: 2 * 1024 * 1024,
+  },
 
   /** Shown in Settings → About & developer. */
   developer: {

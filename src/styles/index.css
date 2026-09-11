@@ -68,6 +68,7 @@
   --color-tint-pink: var(--c-tint-pink);
 
   --color-focus: var(--c-focus);
+  --color-knob: var(--c-knob);
   --color-chart-1: var(--c-chart-1);
   --color-chart-1-hover: var(--c-chart-1-hover);
   --color-chart-grid: var(--c-chart-grid);
@@ -128,6 +129,13 @@
     font-family: var(--app-font-sans);
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
+    /* Native controls (date pickers, checkboxes) follow the accent color. */
+    accent-color: var(--c-primary);
+  }
+
+  /* Selected text is tinted with the accent color instead of the system blue. */
+  ::selection {
+    background-color: color-mix(in srgb, var(--c-primary) 38%, transparent);
   }
 
   body {

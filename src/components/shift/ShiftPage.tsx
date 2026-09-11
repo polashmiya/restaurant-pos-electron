@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { EmptyState } from '@/components/common/EmptyState';
+import { PageHeader } from '@/components/common/PageHeader';
 import { useClock } from '@/hooks/useClock';
 import { useFormatters } from '@/hooks/useFormatters';
 import { useCurrentShift } from '@/store/shiftStore';
@@ -23,11 +24,12 @@ export function ShiftPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border bg-surface px-6 py-4">
-        <div>
-          <h1 className="text-2xl font-bold">{t('shift.title')}</h1>
-          {shift && duration && (
-            <p className="flex flex-wrap items-center gap-x-4 gap-y-1 text-fg-muted">
+      <PageHeader
+        title={t('shift.title')}
+        description={
+          shift &&
+          duration && (
+            <span className="flex flex-wrap items-center gap-x-4 gap-y-1">
               <span className="flex items-center gap-1.5">
                 <UserRound className="size-4" aria-hidden />
                 {shift.cashierName}
@@ -39,28 +41,30 @@ export function ShiftPage() {
               <span>
                 {t('shift.duration')}: {t('shift.durationValue', { hours: duration.hours, minutes: duration.minutes })}
               </span>
-            </p>
-          )}
-        </div>
-        {shift ? (
-          <div className="flex gap-2">
-            <Button
-              variant="secondary"
-              icon={<Printer className="size-5" aria-hidden />}
-              onClick={() => openModal({ type: 'shiftReport', shiftId: shift.id })}
-            >
-              {t('shift.viewReport')}
+            </span>
+          )
+        }
+        actions={
+          shift ? (
+            <>
+              <Button
+                variant="secondary"
+                icon={<Printer className="size-5" aria-hidden />}
+                onClick={() => openModal({ type: 'shiftReport', shiftId: shift.id })}
+              >
+                {t('shift.viewReport')}
+              </Button>
+              <Button variant="danger" icon={<LogOut className="size-5" aria-hidden />} onClick={() => openModal({ type: 'closeShift' })}>
+                {t('shift.close')}
+              </Button>
+            </>
+          ) : (
+            <Button variant="primary" size="lg" icon={<LogIn className="size-5" aria-hidden />} onClick={() => openModal({ type: 'openShift' })}>
+              {t('shift.open')}
             </Button>
-            <Button variant="danger" icon={<LogOut className="size-5" aria-hidden />} onClick={() => openModal({ type: 'closeShift' })}>
-              {t('shift.close')}
-            </Button>
-          </div>
-        ) : (
-          <Button variant="primary" size="lg" icon={<LogIn className="size-5" aria-hidden />} onClick={() => openModal({ type: 'openShift' })}>
-            {t('shift.open')}
-          </Button>
-        )}
-      </div>
+          )
+        }
+      />
 
       <div className="min-h-0 flex-1 space-y-6 overflow-y-auto p-6">
         {shift ? (

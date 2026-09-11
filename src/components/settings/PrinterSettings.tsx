@@ -2,6 +2,7 @@ import { ChefHat, Printer, RefreshCw, ReceiptText } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/common/Button';
+import { Notice } from '@/components/common/Notice';
 import { SegmentedControl } from '@/components/common/SegmentedControl';
 import { Select } from '@/components/common/Select';
 import { Switch } from '@/components/common/Switch';
@@ -58,9 +59,15 @@ export function PrinterSettings() {
         )
       }
     >
-      {!desktop && <p className="mb-4 rounded-control bg-warning/10 p-3 text-sm text-warning-text">{t('settings.printer.desktopOnly')}</p>}
+      {!desktop && (
+        <Notice tone="warning" className="mb-4">
+          {t('settings.printer.desktopOnly')}
+        </Notice>
+      )}
       {desktop && !loadingPrinters && printers.length === 0 && (
-        <p className="mb-4 rounded-control bg-warning/10 p-3 text-sm text-warning-text">{t('settings.printer.noPrinters')}</p>
+        <Notice tone="warning" className="mb-4">
+          {t('settings.printer.noPrinters')}
+        </Notice>
       )}
 
       <div className="grid gap-4 md:grid-cols-2">

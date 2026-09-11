@@ -405,8 +405,10 @@ folder without asking (useful for testing without paper).
   - *Text size* — small / normal / large / extra large. The whole interface scales (everything
     is sized in `rem`; touch targets never go below 48 px). Also Ctrl + / Ctrl − / Ctrl 0.
   - *Card size* — width of menu item and table cards (`--app-card-scale`).
-  - *Accent color* — blue, green, violet, orange or teal for buttons, selections and
-    highlights (`html[data-accent]` sets in `theme.css`, contrast-checked in both themes).
+  - *Accent color* — blue, green, violet, orange or teal for buttons, selections, highlights,
+    the report charts, date pickers and selected text (`html[data-accent]` sets in
+    `theme.css`, contrast-checked in both themes; chart colors pass the dataviz validator).
+    The loading screen starts in the last used theme, accent and text size.
   - *Layout density* (comfortable / compact) and *Table view* (3D / top view).
   - *Reset to defaults* puts all four back.
 - *Show item images*, *Sound effects* and *Ask for the number of guests* are under Interface

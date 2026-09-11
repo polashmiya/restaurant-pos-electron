@@ -1,5 +1,6 @@
 import { useId, useMemo, useState, type KeyboardEvent } from 'react';
 import { useElementWidth } from '@/hooks/useElementWidth';
+import { useTextScale } from '@/hooks/useTextScale';
 import { cn } from '@/utils/cn';
 import { niceScale } from '@/utils/reports';
 
@@ -28,11 +29,15 @@ interface ColumnChartProps {
 }
 
 /* Mark specs: bars ≤24px with a 4px rounded data end and a square base,
-   hairline solid gridlines, one series hue, text in text tokens. */
+   hairline solid gridlines, one series hue, text in text tokens. Text and
+   the space around it are given at normal text size and multiplied by the
+   Settings → Text size scale, like everything sized in rem. */
 const BAR_MAX_WIDTH = 24;
 const TOP_PADDING = 24;
 const AXIS_GAP = 8;
 const X_AXIS_HEIGHT = 26;
+const X_LABEL_OFFSET = 17;
+const PEAK_LABEL_GAP = 7;
 const FONT_SIZE = 11;
 const CHAR_WIDTH = 6.8;
 
@@ -46,24 +51,29 @@ function roundedTopBar(x: number, y: number, width: number, height: number): str
  * target; the keyboard moves through columns (← →, Home, End) and every value
  * is announced, so the tooltip never gates information.
  */
-export function ColumnChart({ data, label, formatValue, formatTick, integer = false, plotHeight = 200 }: ColumnChartProps) {
+export function ColumnChart({ data, label, formatValue, formatTick, integer = false, plotHeight: basePlotHeight = 200 }: ColumnChartProps) {
   const [containerRef, width] = useElementWidth<HTMLDivElement>();
   const [active, setActive] = useState<number | null>(null);
   const liveId = useId();
+  const textScale = useTextScale();
+  const fontSize = FONT_SIZE * textScale;
+  const charWidth = CHAR_WIDTH * textScale;
+  const topPadding = TOP_PADDING * textScale;
+  const plotHeight = basePlotHeight * textScale;
 
   const max = data.reduce((highest, datum) => Math.max(highest, datum.value), 0);
   const scale = useMemo(() => niceScale(max, { integer }), [max, integer]);
   const tickLabels = scale.ticks.map(formatTick);
-  const plotLeft = Math.max(...tickLabels.map((text) => text.length), 1) * CHAR_WIDTH + AXIS_GAP + 2;
+  const plotLeft = Math.max(...tickLabels.map((text) => text.length), 1) * charWidth + AXIS_GAP + 2;
   const plotRight = width - 2;
   const plotWidth = Math.max(10, plotRight - plotLeft);
   const band = plotWidth / Math.max(1, data.length);
   const barWidth = Math.max(2, Math.min(BAR_MAX_WIDTH, band * 0.64));
-  const baseline = TOP_PADDING + plotHeight;
-  const height = baseline + X_AXIS_HEIGHT;
-  const yFor = (value: number) => TOP_PADDING + plotHeight * (1 - value / scale.max);
+  const baseline = topPadding + plotHeight;
+  const height = baseline + X_AXIS_HEIGHT * textScale;
+  const yFor = (value: number) => topPadding + plotHeight * (1 - value / scale.max);
   const longestAxisLabel = data.reduce((longest, datum) => Math.max(longest, datum.axisLabel.length), 1);
-  const labelEvery = Math.max(1, Math.ceil((longestAxisLabel * CHAR_WIDTH + 10) / band));
+  const labelEvery = Math.max(1, Math.ceil((longestAxisLabel * charWidth + 10) / band));
   const peakIndex = max > 0 ? data.findIndex((datum) => datum.value === max) : -1;
   const centerOf = (index: number) => plotLeft + band * index + band / 2;
 
@@ -92,7 +102,7 @@ export function ColumnChart({ data, label, formatValue, formatTick, integer = fa
 
   const peak = peakIndex >= 0 ? data[peakIndex] : undefined;
   const peakText = peak ? formatValue(peak.value) : '';
-  const peakHalfWidth = (peakText.length * CHAR_WIDTH) / 2;
+  const peakHalfWidth = (peakText.length * charWidth) / 2;
   const peakX = Math.min(Math.max(centerOf(peakIndex), plotLeft + peakHalfWidth), plotRight - peakHalfWidth);
 
   return (
@@ -113,7 +123,7 @@ export function ColumnChart({ data, label, formatValue, formatTick, integer = fa
             return (
               <g key={tick}>
                 <line x1={plotLeft} x2={plotRight} y1={y} y2={y} stroke="var(--c-chart-grid)" strokeWidth={1} shapeRendering="crispEdges" />
-                <text x={plotLeft - AXIS_GAP} y={y} dy="0.32em" textAnchor="end" fontSize={FONT_SIZE} className="fill-fg-muted tabular-nums">
+                <text x={plotLeft - AXIS_GAP} y={y} dy="0.32em" textAnchor="end" fontSize={fontSize} className="fill-fg-muted tabular-nums">
                   {tickLabels[index]}
                 </text>
               </g>
@@ -137,9 +147,9 @@ export function ColumnChart({ data, label, formatValue, formatTick, integer = fa
               <text
                 key={`x-${datum.key}`}
                 x={centerOf(index)}
-                y={baseline + 17}
+                y={baseline + X_LABEL_OFFSET * textScale}
                 textAnchor="middle"
-                fontSize={FONT_SIZE}
+                fontSize={fontSize}
                 className={cn('fill-fg-muted', index === active && 'fill-fg')}
               >
                 {datum.axisLabel}
@@ -148,7 +158,7 @@ export function ColumnChart({ data, label, formatValue, formatTick, integer = fa
           )}
 
           {peak && active === null && (
-            <text x={peakX} y={yFor(peak.value) - 7} textAnchor="middle" fontSize={FONT_SIZE} fontWeight={600} className="fill-fg">
+            <text x={peakX} y={yFor(peak.value) - PEAK_LABEL_GAP * textScale} textAnchor="middle" fontSize={fontSize} fontWeight={600} className="fill-fg">
               {peakText}
             </text>
           )}
@@ -157,7 +167,7 @@ export function ColumnChart({ data, label, formatValue, formatTick, integer = fa
             <rect
               key={`hit-${datum.key}`}
               x={plotLeft + band * index}
-              y={TOP_PADDING - 10}
+              y={topPadding - 10}
               width={band}
               height={plotHeight + 10}
               fill="transparent"

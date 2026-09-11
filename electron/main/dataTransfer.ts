@@ -18,9 +18,6 @@ import { getMainWindow } from './windowManager';
    to <userData>/backups for automatic safety copies.
    ========================================================================== */
 
-const MAX_IMPORT_BYTES = 512 * 1024 * 1024;
-const PENDING_IMPORT_TTL_MS = 10 * 60 * 1000;
-
 const pendingImports = new Map<string, { backup: BackupFile; expiresAt: number }>();
 
 function backupsDirectory(): string {
@@ -88,7 +85,7 @@ export async function pickImport(): Promise<PickImportResult> {
 
   try {
     const stats = await fs.promises.stat(filePath);
-    if (stats.size > MAX_IMPORT_BYTES) return { ok: false, reason: 'invalid' };
+    if (stats.size > APP_CONFIG.backup.maxImportBytes) return { ok: false, reason: 'invalid' };
     const text = await fs.promises.readFile(filePath, 'utf-8');
     let json: unknown;
     try {
@@ -102,7 +99,7 @@ export async function pickImport(): Promise<PickImportResult> {
       return { ok: false, reason: 'invalid' };
     }
     const token = randomUUID();
-    pendingImports.set(token, { backup: parsed.backup, expiresAt: Date.now() + PENDING_IMPORT_TTL_MS });
+    pendingImports.set(token, { backup: parsed.backup, expiresAt: Date.now() + APP_CONFIG.backup.importConfirmTtlMs });
     return { ok: true, token, summary: summarizeBackup(parsed.backup) };
   } catch (error) {
     logger.error('Backup import could not be read', error);
@@ -126,9 +123,6 @@ export async function applyImport(token: string): Promise<ApplyImportResult> {
     return { ok: false, reason: 'failed' };
   }
 }
-
-/** Longest CSV report accepted from the renderer (characters). */
-export const MAX_CSV_CHARS = 50 * 1024 * 1024;
 
 /** Saves a CSV report where the user chooses (UTF-8 with BOM so Excel shows Bangla correctly). */
 export async function saveCsvFile(fileName: string, content: string): Promise<ExportResult> {

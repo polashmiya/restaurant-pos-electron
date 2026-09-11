@@ -1,12 +1,12 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { app } from 'electron';
+import { APP_CONFIG } from '@/config/app.config';
 
 /**
  * Minimal file logger for troubleshooting at a restaurant without developer
  * tools. Logs live in <userData>/logs/main.log and rotate at 2 MB.
  */
-const MAX_LOG_BYTES = 2 * 1024 * 1024;
 
 type Level = 'INFO' | 'WARN' | 'ERROR';
 
@@ -42,7 +42,7 @@ function write(level: Level, message: string, error?: unknown): void {
   const file = resolveLogFile();
   if (!file) return;
   try {
-    if (fs.existsSync(file) && fs.statSync(file).size > MAX_LOG_BYTES) {
+    if (fs.existsSync(file) && fs.statSync(file).size > APP_CONFIG.diagnostics.maxLogBytes) {
       fs.renameSync(file, `${file}.1`);
     }
     fs.appendFileSync(file, `${line}\n`, 'utf-8');

@@ -5,7 +5,7 @@ import { getStorage } from '@/services/storage';
 import type { AppSettings, Language, NumberFormat, PrinterSettings, Theme, UIPreferences } from '@/types';
 import { AppError, logError } from '@/utils/errors';
 import type { FormatContext } from '@/utils/format';
-import { appearanceChanged, applyAppearance, applyTheme } from '@/utils/theme';
+import { appearanceChanged, applyAppearance, applyTheme, rememberLook } from '@/utils/theme';
 
 /**
  * Applies everything a settings change affects outside React: i18n
@@ -21,6 +21,9 @@ function applySideEffects(previous: AppSettings | null, next: AppSettings): void
     window.electronAPI?.app.setNativeTheme(next.theme).catch((error: unknown) => logError('native-theme', error));
   }
   if (!previous || appearanceChanged(previous.ui, next.ui)) applyAppearance(next.ui);
+  if (!previous || previous.theme !== next.theme || appearanceChanged(previous.ui, next.ui)) {
+    rememberLook({ theme: next.theme, ...next.ui });
+  }
 }
 
 interface SettingsState {

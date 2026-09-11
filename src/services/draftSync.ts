@@ -1,3 +1,4 @@
+import { APP_CONFIG } from '@/config/app.config';
 import { message } from '@/i18n/keys';
 import { getAllOrderNumbers, useOrderStore } from '@/store/orderStore';
 import { usePosStore } from '@/store/posStore';
@@ -19,7 +20,6 @@ import { getStorage } from './storage';
    The order number is assigned the first time the draft is saved.
    ========================================================================== */
 
-const SYNC_DELAY_MS = 250;
 
 let timer: ReturnType<typeof setTimeout> | null = null;
 let lastSyncedDraft: OrderDraft | null = null;
@@ -45,7 +45,7 @@ export function scheduleDraftSync(): void {
       logError('draft-sync', error);
       toast.error(message('errors.saveFailed'));
     });
-  }, SYNC_DELAY_MS);
+  }, APP_CONFIG.order.draftSaveDelayMs);
 }
 
 /**

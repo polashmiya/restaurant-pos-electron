@@ -1,6 +1,7 @@
 import { Box, Grid2x2 } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { PageHeader } from '@/components/common/PageHeader';
 import { SegmentedControl } from '@/components/common/SegmentedControl';
 import { TABLE_VIEWS } from '@/config/app.config';
 import { message } from '@/i18n/keys';
@@ -27,12 +28,10 @@ export function TablesPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="space-y-3 border-b border-border bg-surface px-6 py-4">
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <h1 className="text-2xl font-bold">{t('tables.title')}</h1>
-            <p className="text-fg-muted">{t('tables.subtitle')}</p>
-          </div>
+      <PageHeader
+        title={t('tables.title')}
+        description={t('tables.subtitle')}
+        actions={
           <SegmentedControl<TableView>
             label={t('tables.view.label')}
             value={view}
@@ -43,9 +42,10 @@ export function TablesPage() {
               return { value: option, label: t(`tables.view.${option}`), icon: <Icon className="size-4" aria-hidden /> };
             })}
           />
-        </div>
+        }
+      >
         <TableStatusFilter value={filter} onChange={setFilter} />
-      </div>
+      </PageHeader>
       <div className="min-h-0 flex-1 overflow-y-auto p-6">
         <TableGrid filter={filter} />
       </div>

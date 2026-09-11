@@ -96,7 +96,14 @@ needs must be DOM-free and added to that list.
 - **Look preferences live on `<html>`** and are applied by `applyAppearance()` (`utils/theme.ts`):
   `data-density`, `data-accent` (accent sets in `theme.css`), the root font size (text size:
   everything in `rem` scales, so keep touch targets and chrome in `px`), and `--app-card-scale`
-  (card grids use `minmax(calc(<base>rem*var(--app-card-scale)),1fr)`).
+  (card grids use `minmax(calc(<base>rem*var(--app-card-scale)),1fr)`). Anything that should
+  look "branded" uses `primary` / `chart-1` tokens so it follows the accent (report charts, native
+  controls via `accent-color`, text selection). Pixel-based drawings (the SVG column chart)
+  multiply their sizes by `useTextScale()`. `rememberLook()` keeps a copy in localStorage so
+  `main.tsx` paints the loading screen in the last theme/accent/size before settings load.
+- **Shared building blocks:** `PageHeader` (every page's header bar), `Notice` (inline
+  info/warning boxes), `Kbd` (`tone="inherit"` on coloured buttons), `Modal`, `IconButton`,
+  `SegmentedControl`. Reuse them instead of copying class strings.
 - **All constants live in `app.config.ts`.** App name/version/description come from
   `package.json` (injected as `__APP_NAME__` etc.).
 - **Security (do not weaken):** `contextIsolation`, `sandbox`, `nodeIntegration: false`;
@@ -123,14 +130,19 @@ Numbers in strings use `{{count, num}}`.
 Edit `src/styles/theme.css` (dark block `:root, :root.dark` and light block `:root.light`). For a
 new token, add `--c-name` to **both** blocks and map it in `index.css` → `@theme inline`
 (`--color-name: var(--c-name)`). Chart colors are `--c-chart-1`, `--c-chart-1-hover`,
-`--c-chart-grid`. The series colors were contrast-checked (≥3:1 on the card surface); recheck
-if you change them.
+`--c-chart-grid`; `chart-1` follows the accent color (set per accent below). The series colors
+were contrast-checked (≥3:1 on the card surface); recheck if you change them.
+Tunable numbers (timings, limits, sizes) go in `app.config.ts` too — pure geometry and unit
+conversions (table drawing, mm↔px) may stay next to the code that uses them.
 
 New **accent color**: add `:root[data-accent='x']` (dark) and `:root.light[data-accent='x']`
-blocks to `theme.css` (`--c-primary`, `-hover`, `-text`, `--c-focus`), a `--c-swatch-x` token,
-the value in `ACCENT_COLORS` (app.config), `SWATCH_CLASSES` in `settings/AccentPicker.tsx`, and
-`accentColor.x` translations. Contrast-check it: white on the button and hover ≥ 4.5:1, accent
-text on `surface` and `surface-2` ≥ 4.5:1, focus ring ≥ 3:1.
+blocks to `theme.css` (`--c-primary`, `-hover`, `-text`, `--c-focus`, `--c-chart-1`,
+`--c-chart-1-hover`), a `--c-swatch-x` token, the value in `ACCENT_COLORS` (app.config),
+`SWATCH_CLASSES` in `settings/AccentPicker.tsx`, and `accentColor.x` translations. Contrast-check
+it: white on the button and hover ≥ 4.5:1, accent text on `surface` and `surface-2` ≥ 4.5:1,
+focus ring ≥ 3:1. Run the chart color through the dataviz validator per mode
+(`validate_palette.js "<hex>" --mode dark --surface "#161a21"`, and `--mode light` on `#ffffff`):
+lightness band, chroma floor, ≥ 3:1 on the card. Dark mode needs a lighter step than the button.
 
 ### Add a setting
 1. Add the field to `AppSettings` / `PrinterSettings` / `UIPreferences` in `src/types/settings.ts`.
@@ -162,8 +174,8 @@ hydration in `services/bootstrap.ts → applyStoreData()`.
 `components/layout/Sidebar.tsx` (`MAIN_ITEMS`) → `nav.<page>` translation. For a shortcut: add it
 to `KEYBOARD_SHORTCUTS` (app.config), `useKeyboardShortcuts.ts` (the `isShortcut` list and the
 `switch`), the list in `settings/AboutSettings.tsx`, the `shortcuts.*` translations, and README.
-Page layout convention: a header bar (`border-b bg-surface px-6 py-4`, `h1 text-2xl font-bold`),
-then a scrollable body (`min-h-0 flex-1 overflow-y-auto p-6`).
+Page layout convention: `<PageHeader title description actions>{filters}</PageHeader>`
+(`common/PageHeader.tsx`), then a scrollable body (`min-h-0 flex-1 overflow-y-auto p-6`).
 
 ### Add a dialog
 Add a variant to the `AppModal` union (`uiStore.ts`), a `case` in `layout/ModalHost.tsx`, and

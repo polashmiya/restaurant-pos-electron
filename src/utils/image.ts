@@ -1,7 +1,6 @@
 import { APP_CONFIG } from '@/config/app.config';
 import { AppError } from './errors';
 
-const MAX_SOURCE_BYTES = 5 * 1024 * 1024;
 
 function loadImage(source: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
@@ -27,7 +26,7 @@ function readFile(file: File): Promise<string> {
  */
 export async function imageFileToDataUrl(file: File, maxSize: number = APP_CONFIG.ui.menuImageMaxSize): Promise<string> {
   if (!file.type.startsWith('image/')) throw new AppError('validation', 'errors.imageFailed');
-  if (file.size > MAX_SOURCE_BYTES) throw new AppError('validation', 'settings.menu.imageTooLarge');
+  if (file.size > APP_CONFIG.ui.menuImageMaxSourceBytes) throw new AppError('validation', 'settings.menu.imageTooLarge');
   try {
     const image = await loadImage(await readFile(file));
     const scale = Math.min(1, maxSize / Math.max(image.naturalWidth, image.naturalHeight));

@@ -22,6 +22,7 @@ import { Badge } from '@/components/common/Badge';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import { EmptyState } from '@/components/common/EmptyState';
+import { PageHeader } from '@/components/common/PageHeader';
 import { CATEGORY_ICONS, FALLBACK_CATEGORY_ICON } from '@/components/pos/categoryVisuals';
 import { useClock } from '@/hooks/useClock';
 import { useFormatters, type Formatters } from '@/hooks/useFormatters';
@@ -109,31 +110,31 @@ export function ReportsPage() {
 
   return (
     <div className="flex h-full flex-col">
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border bg-surface px-6 py-4">
-        <div className="min-w-0">
-          <h1 className="text-2xl font-bold">{t('reports.title')}</h1>
-          <p className="text-fg-muted">{rangeText}</p>
-        </div>
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant="secondary"
-            icon={<FileSpreadsheet className="size-5" aria-hidden />}
-            onClick={() => void exportCsv()}
-            loading={exporting}
-            disabled={!hasData}
-          >
-            {t('reports.exportCsv')}
-          </Button>
-          <Button
-            variant="primary"
-            icon={<Printer className="size-5" aria-hidden />}
-            onClick={() => openModal({ type: 'salesReport', start: range.start.toISOString(), end: range.end.toISOString() })}
-            disabled={!hasData}
-          >
-            {t('reports.print')}
-          </Button>
-        </div>
-      </div>
+      <PageHeader
+        title={t('reports.title')}
+        description={rangeText}
+        actions={
+          <>
+            <Button
+              variant="secondary"
+              icon={<FileSpreadsheet className="size-5" aria-hidden />}
+              onClick={() => void exportCsv()}
+              loading={exporting}
+              disabled={!hasData}
+            >
+              {t('reports.exportCsv')}
+            </Button>
+            <Button
+              variant="primary"
+              icon={<Printer className="size-5" aria-hidden />}
+              onClick={() => openModal({ type: 'salesReport', start: range.start.toISOString(), end: range.end.toISOString() })}
+              disabled={!hasData}
+            >
+              {t('reports.print')}
+            </Button>
+          </>
+        }
+      />
 
       <div className="min-h-0 flex-1 overflow-y-auto">
         <div className="space-y-5 p-6">

@@ -54,7 +54,7 @@ export function AccentPicker({ value, onValueChange }: { value: AccentColor; onV
                 selected ? 'ring-2 ring-fg' : 'group-hover:ring-2 group-hover:ring-border-strong',
               )}
             >
-              {selected && <Check className="size-5 text-white" strokeWidth={3} />}
+              {selected && <Check className="size-5 text-primary-fg" strokeWidth={3} />}
             </span>
             {t(`accentColor.${color}`)}
           </button>

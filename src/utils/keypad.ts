@@ -1,11 +1,11 @@
+import { APP_CONFIG } from '@/config/app.config';
 import { toWesternDigits } from './format';
 
 export type KeypadKey = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '00' | '.' | 'backspace';
 
-const MAX_AMOUNT_LENGTH = 10;
 
 /** Applies a keypad key to an amount string (one dot, max 2 decimals). */
-export function applyKeypadKey(current: string, key: KeypadKey, maxLength = MAX_AMOUNT_LENGTH): string {
+export function applyKeypadKey(current: string, key: KeypadKey, maxLength: number = APP_CONFIG.payment.maxAmountLength): string {
   if (key === 'backspace') return current.slice(0, -1);
   if (key === '.') return current.includes('.') ? current : `${current || '0'}.`;
   let next = `${current}${key}`;
@@ -17,7 +17,7 @@ export function applyKeypadKey(current: string, key: KeypadKey, maxLength = MAX_
 }
 
 /** Cleans typed input (Bangla digits allowed) into a keypad-compatible amount string. */
-export function sanitizeAmountText(raw: string, maxLength = MAX_AMOUNT_LENGTH): string {
+export function sanitizeAmountText(raw: string, maxLength: number = APP_CONFIG.payment.maxAmountLength): string {
   const western = toWesternDigits(raw).replace(/[^\d.]/g, '');
   const [integer = '', ...rest] = western.split('.');
   const decimals = rest.join('').slice(0, 2);

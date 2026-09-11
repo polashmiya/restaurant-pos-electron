@@ -1,5 +1,5 @@
-import { TriangleAlert } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Notice } from '@/components/common/Notice';
 import { SegmentedControl } from '@/components/common/SegmentedControl';
 import { Select } from '@/components/common/Select';
 import { APP_CONFIG } from '@/config/app.config';
@@ -50,12 +50,7 @@ export function PrintOptions({ job }: { job: PrintJob }) {
           }))}
         />
       </div>
-      {noPrinters && (
-        <p className="flex items-start gap-2 rounded-control bg-warning/10 p-3 text-sm text-warning-text">
-          <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden />
-          {t('print.noPrinterHint')}
-        </p>
-      )}
+      {noPrinters && <Notice tone="warning">{t('print.noPrinterHint')}</Notice>}
     </div>
   );
 }

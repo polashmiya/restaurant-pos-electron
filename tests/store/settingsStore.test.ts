@@ -4,6 +4,7 @@ import { i18n } from '@/i18n';
 import { setStorageAdapter } from '@/services/storage';
 import { useSettingsStore } from '@/store/settingsStore';
 import { isAppError } from '@/utils/errors';
+import { applyRememberedLook } from '@/utils/theme';
 import { createMemoryStorage, type MemoryStorage } from '../helpers/memoryStorage';
 
 describe('settings store — language & preference persistence', () => {
@@ -92,6 +93,44 @@ describe('settings store — language & preference persistence', () => {
     expect(useSettingsStore.getState().settings.language).toBe('bn');
     expect(i18n.language).toBe('bn');
     expect(storage.data.settings.language).toBe('bn');
+  });
+});
+
+describe('startup look (loading screen before settings arrive)', () => {
+  beforeEach(() => {
+    setStorageAdapter(createMemoryStorage());
+    useSettingsStore.setState({ settings: createDefaultSettings(), isHydrated: false });
+  });
+
+  afterEach(() => setStorageAdapter(null));
+
+  it('remembers theme, accent and sizes and applies them on the next start', async () => {
+    await useSettingsStore.getState().setTheme('light');
+    await useSettingsStore.getState().updateUI({ accentColor: 'orange', textSize: 'large', cardSize: 'small' });
+
+    // Next start: the page begins with the defaults from index.html…
+    const root = document.documentElement;
+    root.className = 'dark';
+    root.dataset.accent = 'blue';
+    root.style.fontSize = '';
+
+    // …and the remembered look is applied before React renders.
+    applyRememberedLook();
+    expect(root.classList.contains('light')).toBe(true);
+    expect(root.dataset.accent).toBe('orange');
+    expect(root.style.fontSize).toBe('112.5%');
+    expect(root.style.getPropertyValue('--app-card-scale')).toBe('0.85');
+  });
+
+  it('ignores a damaged or unknown remembered look', () => {
+    window.localStorage.setItem('restaurant-pos-look', '{not json');
+    expect(() => applyRememberedLook()).not.toThrow();
+
+    window.localStorage.setItem('restaurant-pos-look', JSON.stringify({ theme: 'neon', accentColor: 'pink', textSize: 'huge' }));
+    applyRememberedLook();
+    expect(document.documentElement.classList.contains('dark')).toBe(true);
+    expect(document.documentElement.dataset.accent).toBe('blue');
+    expect(document.documentElement.style.fontSize).toBe('100%');
   });
 });
 

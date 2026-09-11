@@ -68,7 +68,7 @@ export async function loadSampleSales(): Promise<boolean> {
   const ok = await attempt('sample-sales-load', async () => {
     added = await replaceSampleData(true);
   });
-  if (ok) toast.success(message('settings.about.sampleLoaded', { count: added }), 6000);
+  if (ok) toast.success(message('settings.about.sampleLoaded', { count: added }), APP_CONFIG.ui.longToastDurationMs);
   return ok;
 }
 

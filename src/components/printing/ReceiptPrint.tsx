@@ -189,9 +189,7 @@ export function ReceiptPrint({ order, context, variant = 'receipt', reprint = fa
       )}
 
       {variant === 'bill' && (
-        <p className="c strong" style={{ marginTop: 6 }}>
-          {t('receipt.unpaid')}
-        </p>
+        <p className="c strong gap-top">{t('receipt.unpaid')}</p>
       )}
 
       <hr />

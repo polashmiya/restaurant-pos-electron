@@ -5,7 +5,7 @@ import { isOrder, isShift } from '@/data/validators';
 import type { PaperWidth, StoreKey, StoreSchema, Theme } from '@/types';
 import { IPC_CHANNELS } from '../shared/ipcChannels';
 import type { AppInfo, PrintJobOptions, SavePdfOptions } from '../types/electron';
-import { applyImport, exportBackup, MAX_CSV_CHARS, pickImport, resetToDemoData, saveCsvFile } from './dataTransfer';
+import { applyImport, exportBackup, pickImport, resetToDemoData, saveCsvFile } from './dataTransfer';
 import { logger } from './logger';
 import { getPrinters, printDocument, savePdf } from './printManager';
 import { assertTrustedSender } from './security';
@@ -48,7 +48,7 @@ function requirePaperWidth(value: unknown): PaperWidth {
   throw new Error('Invalid paper width');
 }
 
-function requireString(value: unknown, label: string, maxLength = 500): string {
+function requireString(value: unknown, label: string, maxLength: number = APP_CONFIG.ipcLimits.text): string {
   if (typeof value !== 'string' || value.length > maxLength) throw new Error(`Invalid ${label}`);
   return value;
 }
@@ -59,7 +59,7 @@ function requirePrintJobOptions(value: unknown): PrintJobOptions {
     printerName: requireString(value.printerName, 'printer name'),
     paperWidth: requirePaperWidth(value.paperWidth),
     copies: typeof value.copies === 'number' && Number.isFinite(value.copies) ? value.copies : 1,
-    title: requireString(value.title, 'title', 200),
+    title: requireString(value.title, 'title', APP_CONFIG.ipcLimits.title),
   };
 }
 
@@ -67,7 +67,7 @@ function requireSavePdfOptions(value: unknown): SavePdfOptions {
   if (!isPlainObject(value)) throw new Error('Invalid PDF options');
   return {
     paperWidth: requirePaperWidth(value.paperWidth),
-    fileName: requireString(value.fileName, 'file name', 120),
+    fileName: requireString(value.fileName, 'file name', APP_CONFIG.ipcLimits.fileName),
   };
 }
 
@@ -126,9 +126,9 @@ function registerPrintHandlers(): void {
 function registerDataHandlers(): void {
   handle(IPC_CHANNELS.data.export, () => exportBackup());
   handle(IPC_CHANNELS.data.pickImport, () => pickImport());
-  handle(IPC_CHANNELS.data.applyImport, (token) => applyImport(requireString(token, 'token', 100)));
+  handle(IPC_CHANNELS.data.applyImport, (token) => applyImport(requireString(token, 'token', APP_CONFIG.ipcLimits.token)));
   handle(IPC_CHANNELS.data.saveCsv, (fileName, content) =>
-    saveCsvFile(requireString(fileName, 'file name', 120), requireString(content, 'report', MAX_CSV_CHARS)),
+    saveCsvFile(requireString(fileName, 'file name', APP_CONFIG.ipcLimits.fileName), requireString(content, 'report', APP_CONFIG.reports.maxCsvChars)),
   );
 }
 

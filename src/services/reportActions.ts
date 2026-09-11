@@ -93,7 +93,7 @@ export async function exportReportCsv(orders: readonly Order[], range: ReportRan
       return;
     }
     const result = await api.data.saveCsv(fileName, csv);
-    if (result.ok) toast.success(message('reports.exported', { path: result.filePath }), 8000);
+    if (result.ok) toast.success(message('reports.exported', { path: result.filePath }), APP_CONFIG.ui.longToastDurationMs);
     else if (result.reason === 'failed') toast.error(message('errors.reportExportFailed'));
   } catch (error) {
     logError('report-export', error);

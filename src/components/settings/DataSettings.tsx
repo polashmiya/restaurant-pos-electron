@@ -2,6 +2,7 @@ import { Database, Download, FolderOpen, Upload } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/common/Button';
+import { Notice } from '@/components/common/Notice';
 import { exportData, importData, openDataFolder } from '@/services/dataActions';
 import { isDesktopRuntime } from '@/services/storage';
 import { SettingRow, SettingsSection } from './SettingsSection';
@@ -41,7 +42,11 @@ export function DataSettings() {
       description={t('settings.data.description')}
       icon={<Database className="size-5" aria-hidden />}
     >
-      {!desktop && <p className="mb-4 rounded-control bg-warning/10 p-3 text-sm text-warning-text">{t('settings.data.desktopOnly')}</p>}
+      {!desktop && (
+        <Notice tone="warning" className="mb-4">
+          {t('settings.data.desktopOnly')}
+        </Notice>
+      )}
       <SettingRow label={t('settings.data.export')} hint={t('settings.data.exportHint')}>
         <Button
           variant="primary"

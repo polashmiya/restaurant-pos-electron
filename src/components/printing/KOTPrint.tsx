@@ -39,9 +39,7 @@ export function KOTPrint({
 
   return (
     <div className={paperClass(paperWidth)} lang={language} data-document="kot">
-      <p className="heading" style={{ fontSize: 16 }}>
-        {t('kot.title')}
-      </p>
+      <p className="heading lg">{t('kot.title')}</p>
       <p className="c">
         {ticketNumber !== undefined && <span className="badge">{t('kot.ticket', { count: ticketNumber })}</span>}
         {additional && <span className="badge">{t('kot.additional')}</span>}
@@ -58,9 +56,7 @@ export function KOTPrint({
           {order.tableName && (
             <tr>
               <th>{t('kot.table')}</th>
-              <td className="strong" style={{ fontSize: 16 }}>
-                {format.digits(order.tableName)}
-              </td>
+              <td className="strong lg">{format.digits(order.tableName)}</td>
             </tr>
           )}
           {order.guests && (
