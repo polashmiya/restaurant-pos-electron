@@ -28,7 +28,7 @@ export function CartActions() {
   };
 
   return (
-    <div className="space-y-2 border-t border-border p-4 compact:p-3">
+    <div className="space-y-2 border-t border-border px-4 py-3 compact:space-y-1.5 compact:px-3 compact:py-2">
       <div className={cn('grid gap-2', isDineIn ? 'grid-cols-3' : 'grid-cols-2')}>
         <Button
           variant="secondary"
@@ -67,7 +67,7 @@ export function CartActions() {
       </div>
       <Button
         variant="success"
-        size="xl"
+        size="lg"
         fullWidth
         onClick={() => void requestPayment()}
         disabled={!hasItems || processing}

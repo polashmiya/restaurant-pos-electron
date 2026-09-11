@@ -41,8 +41,8 @@ export function CartItemList() {
   }
 
   return (
-    <div className="min-h-0 flex-1 overflow-y-auto px-4 py-3">
-      <ul aria-label={t('cart.orderItems')} className="space-y-2">
+    <div className="@container min-h-0 flex-1 overflow-y-auto px-4 py-1 compact:px-3">
+      <ul aria-label={t('cart.orderItems')} className="divide-y divide-border">
         {items.map((item) => (
           <CartItem key={item.id} item={item} format={format} image={imageById.get(item.menuItemId)} />
         ))}

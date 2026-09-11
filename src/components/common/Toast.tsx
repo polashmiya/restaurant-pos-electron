@@ -46,7 +46,11 @@ const ToastItem = memo(function ToastItem({ toast }: { toast: ToastModel }) {
   );
 });
 
-/** Notification area (bottom-end corner, above everything). */
+/**
+ * Notification area: bottom-start, next to the sidebar and above everything —
+ * over the menu rather than the cart, so it never hides the order or the
+ * payment button.
+ */
 export function ToastViewport() {
   const { t } = useTranslation();
   const toasts = useUIStore((state) => state.toasts);
@@ -55,7 +59,7 @@ export function ToastViewport() {
     <section
       aria-label={t('a11y.notifications')}
       aria-live="polite"
-      className="pointer-events-none fixed end-4 bottom-4 z-[60] flex w-[min(24rem,calc(100vw-2rem))] flex-col gap-2 no-print"
+      className="pointer-events-none fixed start-[calc(var(--app-sidebar-width)+1rem)] bottom-4 z-60 flex w-[min(24rem,calc(100vw-var(--app-sidebar-width)-2rem))] flex-col gap-2 no-print"
     >
       {toasts.map((toast) => (
         <ToastItem key={toast.id} toast={toast} />

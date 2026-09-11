@@ -30,16 +30,16 @@ export function TableSelector() {
       ) : (
         <TriangleAlert className="size-5 shrink-0" aria-hidden />
       )}
-      <span className="min-w-0 flex-1">
+      <span className="flex min-w-0 flex-1 flex-wrap items-baseline gap-x-2 leading-tight">
         {table ? (
           <>
-            <span className="block font-semibold">{t('tables.tableName', { name: format.digits(table.name) })}</span>
-            <span className="block text-sm text-fg-muted">{t('tables.capacity', { count: table.capacity })}</span>
+            <span className="font-semibold">{t('tables.tableName', { name: format.digits(table.name) })}</span>
+            <span className="text-sm text-fg-muted">{t('tables.capacity', { count: table.capacity })}</span>
           </>
         ) : (
           <>
-            <span className="block font-semibold">{t('cart.selectTable')}</span>
-            <span className="block text-sm">{t('cart.tableRequired')}</span>
+            <span className="font-semibold">{t('cart.selectTable')}</span>
+            <span className="text-sm">{t('cart.tableRequired')}</span>
           </>
         )}
       </span>

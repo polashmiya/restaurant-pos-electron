@@ -18,7 +18,7 @@ export function CartPanel() {
   return (
     <section aria-label={t('cart.title')} className="flex h-full min-h-0 w-full flex-col bg-surface">
       <CartHeader />
-      <div className="space-y-2 border-b border-border px-4 py-3 compact:py-2">
+      <div className="space-y-2 border-b border-border px-4 py-2 compact:space-y-1.5 compact:px-3 compact:py-1.5">
         <OrderTypeSelector />
         {orderType === 'dine-in' && (
           <div className="flex gap-2">
