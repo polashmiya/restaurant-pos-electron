@@ -112,6 +112,7 @@ export const en = {
     label: 'Language',
     bn: 'বাংলা',
     en: 'English',
+    switchTo: 'Switch to {{language}}',
   },
 
   theme: {

@@ -28,7 +28,45 @@ export function ShiftHistory() {
         <EmptyState compact icon={<Archive aria-hidden />} title={t('shift.noHistory')} />
       ) : (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[44rem] text-sm">
+          {/* Phones and small tablets: one row per shift as a card. */}
+          <ul aria-label={t('shift.history')} className="divide-y divide-border lg:hidden">
+            {closed.map((shift) => {
+              const difference = shift.closingCash !== undefined ? calculateCashDifference(shift, shift.closingCash) : 0;
+              return (
+                <li key={shift.id}>
+                  <button
+                    type="button"
+                    onClick={() => openModal({ type: 'shiftReport', shiftId: shift.id })}
+                    className="flex w-full flex-col gap-1 py-3 text-start transition-colors hover:bg-surface-2"
+                  >
+                    <span className="flex items-center justify-between gap-3">
+                      <span className="truncate font-semibold">{format.dateTime(shift.openedAt)}</span>
+                      <span className="font-bold tabular-nums">{format.currency(shift.totalSales)}</span>
+                    </span>
+                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-fg-muted">
+                      <span>{shift.cashierName}</span>
+                      <span aria-hidden>·</span>
+                      <span>{t('shift.orderCount')}: {format.number(shift.orderCount)}</span>
+                      <span aria-hidden>·</span>
+                      <span
+                        className={cn(
+                          'font-semibold tabular-nums',
+                          toMinor(difference) < 0
+                            ? 'text-danger-text'
+                            : toMinor(difference) > 0
+                              ? 'text-info-text'
+                              : 'text-success-text',
+                        )}
+                      >
+                        {t('shift.difference')}: {format.currency(difference)}
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <table className="hidden w-full min-w-[44rem] text-sm lg:table">
             <thead className="text-xs text-fg-muted uppercase">
               <tr>
                 <th scope="col" className="py-2 text-start font-semibold">

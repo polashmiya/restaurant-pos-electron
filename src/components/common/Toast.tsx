@@ -59,7 +59,16 @@ export function ToastViewport() {
     <section
       aria-label={t('a11y.notifications')}
       aria-live="polite"
-      className="pointer-events-none fixed start-[calc(var(--app-sidebar-width)+1rem)] bottom-4 z-60 flex w-[min(24rem,calc(100vw-var(--app-sidebar-width)-2rem))] flex-col gap-2 no-print"
+      className={cn(
+        'pointer-events-none fixed z-60 flex flex-col gap-2 no-print',
+        // Phones: under the header, where nothing important lives. A dialog
+        // there is a bottom sheet, so a toast at the bottom would sit on its
+        // buttons.
+        'inset-x-4 top-[calc(var(--app-header-height)+0.75rem)]',
+        // Wider: bottom-start, clear of the side rail or the bottom navigation.
+        'sm:inset-x-auto sm:top-auto sm:start-[calc(var(--app-sidebar-width)+1rem)]',
+        'sm:bottom-[calc(var(--app-bottom-nav-height)+1rem)] sm:w-[min(24rem,calc(100vw-var(--app-sidebar-width)-2rem))]',
+      )}
     >
       {toasts.map((toast) => (
         <ToastItem key={toast.id} toast={toast} />

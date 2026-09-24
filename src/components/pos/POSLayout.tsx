@@ -10,8 +10,9 @@ import { MenuGrid } from './MenuGrid';
 import { MenuSearch } from './MenuSearch';
 
 /**
- * Split-screen POS (≈65% menu / 35% cart). Below 1024 px the cart becomes a
- * slide-over drawer opened from a floating button, so the POS stays usable.
+ * Split-screen POS (≈65% menu / 35% cart). Below `lg` the cart becomes a
+ * slide-over drawer opened from a floating button, so the POS stays usable
+ * on tablets and phones.
  */
 export function POSLayout() {
   const { t } = useTranslation();
@@ -24,7 +25,7 @@ export function POSLayout() {
     <div className="flex h-full min-h-0">
       <section
         aria-label={t('pos.menu')}
-        className="flex min-w-0 flex-1 flex-col gap-3 p-4 compact:gap-2 compact:p-3"
+        className="flex min-w-0 flex-1 flex-col gap-2 p-3 sm:gap-3 sm:p-4 compact:gap-2 compact:p-3"
       >
         <MenuSearch />
         <CategoryTabs />
@@ -39,7 +40,7 @@ export function POSLayout() {
       <button
         type="button"
         onClick={() => setDrawerOpen(true)}
-        className="fixed end-4 bottom-4 z-30 flex min-h-14 items-center gap-3 rounded-full bg-primary px-5 font-bold text-primary-fg shadow-xl lg:hidden"
+        className="absolute end-3 bottom-3 z-30 flex min-h-14 items-center gap-2 rounded-full bg-primary px-4 font-bold text-primary-fg shadow-xl sm:end-4 sm:bottom-4 sm:gap-3 sm:px-5 lg:hidden"
         aria-label={t('pos.showCart')}
       >
         <ShoppingCart className="size-5" aria-hidden />

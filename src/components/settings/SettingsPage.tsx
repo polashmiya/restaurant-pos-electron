@@ -51,9 +51,17 @@ export function SettingsPage() {
   const [active, setActive] = useState<SectionId>('restaurant');
 
   return (
-    <div className="flex h-full min-h-0">
-      <nav aria-label={t('settings.title')} className="w-64 shrink-0 space-y-1 overflow-y-auto border-e border-border bg-surface p-3">
-        <h1 className="px-3 pt-1 pb-3 text-2xl font-bold">{t('settings.title')}</h1>
+    // The section list is a sideways-scrolling tab bar on phones and small
+    // tablets, and the usual column from `lg` up.
+    <div className="flex h-full min-h-0 flex-col lg:flex-row">
+      <nav
+        aria-label={t('settings.title')}
+        className={cn(
+          'scrollbar-none flex shrink-0 gap-1 overflow-x-auto border-b border-border bg-surface p-2',
+          'lg:w-64 lg:flex-col lg:overflow-y-auto lg:border-e lg:border-b-0 lg:p-3',
+        )}
+      >
+        <h1 className="sr-only lg:not-sr-only lg:px-3 lg:pt-1 lg:pb-3 lg:text-2xl lg:font-bold">{t('settings.title')}</h1>
         {SECTIONS.map(({ id, icon: Icon }) => (
           <button
             key={id}
@@ -61,7 +69,8 @@ export function SettingsPage() {
             onClick={() => setActive(id)}
             aria-current={active === id ? 'page' : undefined}
             className={cn(
-              'flex min-h-touch w-full items-center gap-3 rounded-control px-3 text-start font-semibold transition-colors',
+              'flex min-h-touch shrink-0 items-center gap-2 rounded-control px-3 text-start text-sm font-semibold whitespace-nowrap transition-colors',
+              'lg:w-full lg:gap-3 lg:text-base',
               active === id ? 'bg-primary/15 text-primary-text' : 'text-fg-muted hover:bg-surface-2 hover:text-fg',
             )}
           >
@@ -70,7 +79,7 @@ export function SettingsPage() {
           </button>
         ))}
       </nav>
-      <div className="min-w-0 flex-1 overflow-y-auto p-6">
+      <div className="min-w-0 flex-1 overflow-y-auto p-4 sm:p-6">
         <div className="mx-auto max-w-5xl">
           <Section id={active} />
         </div>

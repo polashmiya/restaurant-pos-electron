@@ -123,13 +123,13 @@ export function TableManagement() {
       {tables.length === 0 ? (
         <EmptyState compact icon={<LayoutGrid aria-hidden />} title={t('tables.noTables')} />
       ) : (
-        <ul className="grid gap-2 md:grid-cols-2 xl:grid-cols-3">
+        <ul className="grid gap-2 sm:grid-cols-2 xl:grid-cols-3">
           {tables.map((table) => {
             const visual = TABLE_STATUS_VISUALS[table.status];
             const StatusIcon = visual.icon;
             return (
-              <li key={table.id} className="flex items-center gap-3 rounded-card border border-border px-3 py-2">
-                <span className="w-12 text-2xl font-extrabold tabular-nums">{format.digits(table.name)}</span>
+              <li key={table.id} className="flex items-center gap-2 rounded-card border border-border px-3 py-2 sm:gap-3">
+                <span className="w-10 shrink-0 text-2xl font-extrabold tabular-nums sm:w-12">{format.digits(table.name)}</span>
                 <div className="min-w-0 flex-1 space-y-1">
                   <p className="flex items-center gap-1 text-sm text-fg-muted">
                     <Users className="size-4" aria-hidden />

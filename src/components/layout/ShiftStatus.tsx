@@ -1,6 +1,7 @@
 import { CircleDot, LogIn, UserRound } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/common/Button';
+import { IconButton } from '@/components/common/IconButton';
 import { useFormatters } from '@/hooks/useFormatters';
 import { useCurrentShift } from '@/store/shiftStore';
 import { useUIStore } from '@/store/uiStore';
@@ -15,15 +16,31 @@ export function ShiftStatus() {
 
   if (!shift) {
     return (
-      <Button
-        variant="outline"
-        size="sm"
-        icon={<LogIn className="size-4" aria-hidden />}
-        onClick={() => openModal({ type: 'openShift' })}
-        className="border-warning/60 text-warning-text"
-      >
-        {t('header.openShift')}
-      </Button>
+      <>
+        <span className="hidden sm:block">
+          <Button
+            variant="outline"
+            size="sm"
+            icon={<LogIn className="size-4" aria-hidden />}
+            onClick={() => openModal({ type: 'openShift' })}
+            className="border-warning/60 text-warning-text"
+          >
+            {t('header.openShift')}
+          </Button>
+        </span>
+        {/* Phones: the same action as an icon-only button. */}
+        <span className="sm:hidden">
+          <IconButton
+            label={t('header.openShift')}
+            icon={<LogIn className="size-5" aria-hidden />}
+            variant="outline"
+            size="sm"
+            onClick={() => openModal({ type: 'openShift' })}
+            className="border-warning/60 text-warning-text"
+            showTooltip={false}
+          />
+        </span>
+      </>
     );
   }
 
@@ -31,9 +48,13 @@ export function ShiftStatus() {
     <button
       type="button"
       onClick={() => navigate('shift')}
-      className="flex min-h-10 items-center gap-3 rounded-control border border-border px-3 text-start hover:bg-surface-2"
+      aria-label={`${t('header.shiftOpen')} — ${t('header.since', { time: format.time(shift.openedAt) })} — ${t('header.cashier')}: ${shift.cashierName}`}
+      className="flex min-h-10 shrink-0 items-center gap-3 rounded-control border border-border px-2 text-start hover:bg-surface-2 sm:px-3"
     >
-      <span className="flex flex-col leading-tight">
+      {/* Phones: the green dot alone says "a shift is open"; the details are
+          on the Shift page this button opens. */}
+      <CircleDot className="size-5 text-success-text sm:hidden" aria-hidden />
+      <span className="hidden flex-col leading-tight sm:flex">
         <span className="flex items-center gap-1.5 text-sm font-semibold text-success-text">
           <CircleDot className="size-3.5" aria-hidden />
           {t('header.shiftOpen')}

@@ -60,7 +60,48 @@ export function OrderHistory() {
         />
       ) : (
         <div className="min-h-0 flex-1 overflow-auto rounded-card border border-border bg-surface">
-          <table className="w-full min-w-[56rem] text-start text-sm">
+          {/* Phones and small tablets: one card per order. The full table needs
+              more width than they have, so it only appears from `lg` up. */}
+          <ul aria-label={t('orders.history')} className="divide-y divide-border lg:hidden">
+            {visible.map((order) => {
+              const stamp = getOrderTimestamp(order);
+              return (
+                <li key={order.id}>
+                  <button
+                    type="button"
+                    onClick={() => openModal({ type: 'orderDetails', orderId: order.id })}
+                    className="flex w-full flex-col gap-1 px-4 py-3 text-start transition-colors hover:bg-surface-2"
+                  >
+                    <span className="flex items-center justify-between gap-3">
+                      <span className="truncate font-semibold">{order.orderNumber}</span>
+                      <span className="font-bold tabular-nums">{format.currency(order.total)}</span>
+                    </span>
+                    <span className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-fg-muted">
+                      <span className="tabular-nums">
+                        {format.date(stamp)} · {format.time(stamp)}
+                      </span>
+                      <span aria-hidden>·</span>
+                      <span>{t(`orderType.${order.orderType}`)}</span>
+                      {order.tableName && (
+                        <>
+                          <span aria-hidden>·</span>
+                          <span>{t('tables.tableName', { name: format.digits(order.tableName) })}</span>
+                        </>
+                      )}
+                      {order.payment && (
+                        <>
+                          <span aria-hidden>·</span>
+                          <span>{t(`paymentMethod.${order.payment.method}`)}</span>
+                        </>
+                      )}
+                      <OrderStatusBadge status={order.status} />
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          <table className="hidden w-full min-w-[56rem] text-start text-sm lg:table">
             <thead className="sticky top-0 z-10 bg-surface-2 text-xs tracking-wide text-fg-muted uppercase">
               <tr>
                 {(['orderId', 'date', 'time', 'type', 'table', 'payment'] as const).map((column) => (

@@ -9,7 +9,7 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
 
 export function Card({ as: Tag = 'div', padded = true, className, children, ...rest }: CardProps) {
   return (
-    <Tag className={cn('rounded-card border border-border bg-surface', padded && 'p-5', className)} {...rest}>
+    <Tag className={cn('rounded-card border border-border bg-surface', padded && 'p-4 sm:p-5', className)} {...rest}>
       {children}
     </Tag>
   );
@@ -25,13 +25,16 @@ export interface CardHeaderProps {
 
 export function CardHeader({ title, description, actions, icon, className }: CardHeaderProps) {
   return (
-    <div className={cn('mb-4 flex items-start gap-3', className)}>
-      {icon && <span className="mt-0.5 text-primary-text">{icon}</span>}
-      <div className="min-w-0 flex-1">
-        <h3 className="text-lg font-bold">{title}</h3>
-        {description && <p className="mt-0.5 text-sm text-fg-muted">{description}</p>}
+    // Narrow cards put the actions on their own line under the title.
+    <div className={cn('mb-4 flex flex-col gap-3 sm:flex-row sm:items-start', className)}>
+      <div className="flex min-w-0 flex-1 items-start gap-3">
+        {icon && <span className="mt-0.5 text-primary-text">{icon}</span>}
+        <div className="min-w-0 flex-1">
+          <h3 className="text-lg font-bold">{title}</h3>
+          {description && <p className="mt-0.5 text-sm text-fg-muted">{description}</p>}
+        </div>
       </div>
-      {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
+      {actions && <div className="flex shrink-0 flex-wrap items-center gap-2">{actions}</div>}
     </div>
   );
 }

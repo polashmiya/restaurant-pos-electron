@@ -33,7 +33,11 @@ export function SettingRow({ label, hint, children }: { label: ReactNode; hint?:
         <p className="font-semibold">{label}</p>
         {hint && <p className="text-sm text-fg-muted">{hint}</p>}
       </div>
-      <div className="shrink-0">{children}</div>
+      {/* Controls wider than a phone (segmented controls with four options)
+          scroll sideways instead of stretching the card. */}
+      <div className="scrollbar-none -mx-1 max-w-full overflow-x-auto px-1 py-1 @2xl:mx-0 @2xl:shrink-0 @2xl:overflow-visible @2xl:px-0 @2xl:py-0">
+        {children}
+      </div>
     </div>
   );
 }

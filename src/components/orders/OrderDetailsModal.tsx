@@ -85,7 +85,7 @@ export function OrderDetailsModal({ orderId, onClose }: { orderId: string; onClo
         )
       }
     >
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
+      <div className="grid gap-4 sm:gap-5 lg:grid-cols-[minmax(0,1fr)_18rem]">
         <section aria-label={t('common.items')} className="space-y-2">
           <table className="w-full text-sm">
             <thead className="border-b border-border text-xs text-fg-muted uppercase">

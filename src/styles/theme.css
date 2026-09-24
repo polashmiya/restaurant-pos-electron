@@ -24,11 +24,29 @@
 
   /* Sizes (touch targets) */
   --app-touch-min: 48px;
-  --app-sidebar-width: 88px;
-  --app-header-height: 64px;
+
+  /*
+   * Chrome sizes per screen. Phones and small windows put the navigation in a
+   * bar under the content, so the side rail is 0 wide there; from `md` up the
+   * rail returns and the bottom bar disappears. Anything positioned against
+   * the app chrome (toasts, the floating cart button) reads these two values,
+   * so it follows the layout automatically.
+   */
+  --app-sidebar-width: 0px;
+  --app-bottom-nav-height: 60px;
+  --app-header-height: 56px;
 
   /* Menu/table card width multiplier (Settings → Appearance → Card size). */
   --app-card-scale: 1;
+}
+
+/* `md` (48rem) — tablets and up: side rail instead of a bottom bar. */
+@media (min-width: 48rem) {
+  :root {
+    --app-sidebar-width: 88px;
+    --app-bottom-nav-height: 0px;
+    --app-header-height: 64px;
+  }
 }
 
 /* ------------------------------ Dark (default) --------------------------- */

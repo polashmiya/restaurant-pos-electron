@@ -20,12 +20,14 @@ export function OrderFiltersBar({
     onChange({ ...filters, [key]: value });
 
   return (
-    <div className="grid gap-3 lg:grid-cols-[minmax(16rem,1.6fr)_repeat(4,minmax(9rem,1fr))]">
+    // One column on phones, two on small tablets, then the single filter row.
+    <div className="grid gap-2 sm:grid-cols-2 sm:gap-3 lg:grid-cols-[minmax(16rem,1.6fr)_repeat(4,minmax(9rem,1fr))]">
       <SearchInput
         value={filters.query}
         onValueChange={(value) => update('query', value)}
         label={t('common.search')}
         placeholder={t('orders.searchPlaceholder')}
+        className="sm:col-span-2 lg:col-span-1"
       />
       <Select<DateRangeFilter>
         aria-label={t('orders.dateRange')}

@@ -21,10 +21,12 @@ export interface SegmentedControlProps<T extends string> {
   className?: string;
 }
 
+/* Narrow screens get tighter padding and, for the medium size, one step
+   smaller text, so three options still fit across a phone. */
 const SIZE_CLASSES = {
-  sm: 'min-h-9 px-3 text-sm',
-  md: 'min-h-touch px-4 text-base',
-  lg: 'min-h-14 px-5 text-base',
+  sm: 'min-h-9 px-2.5 text-sm sm:px-3',
+  md: 'min-h-touch px-2.5 text-sm sm:px-4 sm:text-base',
+  lg: 'min-h-14 px-4 text-base sm:px-5',
 } as const;
 
 /**
@@ -80,7 +82,7 @@ export function SegmentedControl<T extends string>({
             disabled={option.disabled}
             onClick={() => onValueChange(option.value)}
             className={cn(
-              'inline-flex items-center justify-center gap-2 rounded-[calc(var(--app-radius-control)-4px)] font-semibold',
+              'inline-flex min-w-0 items-center justify-center gap-1.5 rounded-[calc(var(--app-radius-control)-4px)] font-semibold sm:gap-2 [&>svg]:shrink-0',
               'transition-colors duration-150 disabled:opacity-40',
               SIZE_CLASSES[size],
               fullWidth && 'flex-1',
@@ -88,7 +90,9 @@ export function SegmentedControl<T extends string>({
             )}
           >
             {option.icon}
-            {option.label}
+            {/* The label shortens rather than pushing the bar past its box; the
+                accessible name stays whole. */}
+            <span className="truncate">{option.label}</span>
           </button>
         );
       })}

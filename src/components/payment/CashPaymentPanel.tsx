@@ -54,7 +54,7 @@ export function CashPaymentPanel({ total, amountText, onAmountTextChange, disabl
           {t('payment.amountReceived')}
         </label>
         <div className="relative flex items-center">
-          <span className="pointer-events-none absolute start-4 text-2xl font-bold text-fg-muted" aria-hidden>
+          <span className="pointer-events-none absolute start-4 text-xl font-bold text-fg-muted sm:text-2xl" aria-hidden>
             {format.context.currencySymbol}
           </span>
           <input
@@ -67,7 +67,7 @@ export function CashPaymentPanel({ total, amountText, onAmountTextChange, disabl
             disabled={disabled}
             aria-invalid={amount !== null && !sufficient ? true : undefined}
             aria-describedby="payment-change"
-            className={cn(controlClassName, 'min-h-16 ps-12 text-3xl font-bold tabular-nums')}
+            className={cn(controlClassName, 'min-h-14 ps-11 text-2xl font-bold tabular-nums sm:min-h-16 sm:ps-12 sm:text-3xl')}
             data-autofocus
           />
         </div>
@@ -85,7 +85,7 @@ export function CashPaymentPanel({ total, amountText, onAmountTextChange, disabl
         id="payment-change"
         aria-live="polite"
         className={cn(
-          'flex min-h-20 items-center justify-between gap-4 rounded-card border-2 px-5 py-3',
+          'flex min-h-20 flex-wrap items-center justify-between gap-x-4 gap-y-1 rounded-card border-2 px-4 py-3 sm:px-5',
           amount === null
             ? 'border-border bg-surface-2'
             : sufficient
@@ -105,7 +105,7 @@ export function CashPaymentPanel({ total, amountText, onAmountTextChange, disabl
         ) : (
           <>
             <p className="text-lg font-semibold text-fg-muted">{t('payment.change')}</p>
-            <p className={cn('text-4xl font-extrabold tabular-nums', amount !== null && 'text-success-text')}>
+            <p className={cn('text-3xl font-extrabold break-words tabular-nums sm:text-4xl', amount !== null && 'text-success-text')}>
               {amount === null ? '—' : format.currency(change)}
             </p>
           </>

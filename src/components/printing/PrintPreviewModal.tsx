@@ -93,7 +93,7 @@ function OrderPrintDialog({ order, initialKind, justCompleted, onClose }: OrderP
         </>
       }
     >
-      <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_auto]">
+      <div className="grid gap-4 sm:gap-5 md:grid-cols-[minmax(0,1fr)_auto]">
         <div className="space-y-4">
           {justCompleted && (
             <div role="status" className="rounded-card border-2 border-success/50 bg-success/10 p-4">

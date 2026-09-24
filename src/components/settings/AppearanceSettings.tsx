@@ -37,8 +37,8 @@ export function AppearanceSettings() {
   };
 
   return (
-    <div className="grid items-start gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,28rem)]">
-      <div className="min-w-0 space-y-6">
+    <div className="grid items-start gap-4 sm:gap-6 xl:grid-cols-[minmax(0,1fr)_minmax(0,28rem)]">
+      <div className="min-w-0 space-y-4 sm:space-y-6">
         <SettingsSection title={t('settings.appearance.title')} icon={<Palette className="size-5" aria-hidden />}>
           <SettingRow label={t('language.label')} hint={t('settings.appearance.languageHint')}>
             <LanguageSwitcher size="md" />

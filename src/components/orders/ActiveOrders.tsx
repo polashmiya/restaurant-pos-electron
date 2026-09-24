@@ -43,7 +43,7 @@ export function ActiveOrders() {
   }
 
   return (
-    <ul className="grid gap-3 lg:grid-cols-2 2xl:grid-cols-3">
+    <ul className="grid gap-3 md:grid-cols-2 2xl:grid-cols-3">
       {orders.map((order) => {
         const itemCount = order.items.reduce((sum, item) => sum + item.quantity, 0);
         const isCurrent = order.id === currentOrderId;

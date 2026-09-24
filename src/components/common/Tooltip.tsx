@@ -8,6 +8,8 @@ export interface TooltipProps {
   side?: 'top' | 'bottom' | 'bottom-end' | 'end';
   children: ReactNode;
   className?: string;
+  /** Extra classes for the bubble — e.g. to hide it in a layout with no room. */
+  bubbleClassName?: string;
 }
 
 const SIDE_CLASSES = {
@@ -21,7 +23,7 @@ const SIDE_CLASSES = {
  * Lightweight CSS tooltip shown on hover and keyboard focus. The label is
  * decorative (aria-hidden) — the wrapped control carries its own name.
  */
-export function Tooltip({ label, shortcut, side = 'bottom', children, className }: TooltipProps) {
+export function Tooltip({ label, shortcut, side = 'bottom', children, className, bubbleClassName }: TooltipProps) {
   return (
     <span className={cn('group/tooltip relative inline-flex', className)}>
       {children}
@@ -32,6 +34,7 @@ export function Tooltip({ label, shortcut, side = 'bottom', children, className 
           'text-xs font-medium whitespace-nowrap text-fg opacity-0 shadow-lg transition-opacity duration-150',
           'group-hover/tooltip:opacity-100 group-has-[:focus-visible]/tooltip:opacity-100',
           SIDE_CLASSES[side],
+          bubbleClassName,
         )}
       >
         {label}

@@ -115,7 +115,9 @@ export function Modal({
   if (!open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-40 flex items-center justify-center p-4 sm:p-6">
+    // Phones get a bottom sheet that keeps the dialog's controls within thumb
+    // reach; from `sm` up it is a centred dialog with a gutter around it.
+    <div className="fixed inset-0 z-40 flex items-end justify-center p-0 sm:items-center sm:p-4 md:p-6">
       <div
         aria-hidden
         className="absolute inset-0 bg-overlay backdrop-blur-[2px]"
@@ -131,14 +133,15 @@ export function Modal({
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
         className={cn(
-          'relative flex max-h-[calc(100vh-2rem)] w-full flex-col overflow-hidden rounded-card border border-border',
+          'relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-card border border-border',
+          'sm:max-h-[calc(100dvh-2rem)] sm:rounded-card',
           'bg-surface text-fg shadow-2xl outline-none',
           SIZE_CLASSES[size],
         )}
       >
-        <header className="flex items-start gap-3 border-b border-border px-5 py-4">
+        <header className="flex items-start gap-3 border-b border-border px-4 py-3 sm:px-5 sm:py-4">
           <div className="min-w-0 flex-1">
-            <h2 id={titleId} className="text-xl font-bold">
+            <h2 id={titleId} className="text-lg font-bold sm:text-xl">
               {title}
             </h2>
             {description && (
@@ -164,9 +167,17 @@ export function Modal({
             />
           )}
         </header>
-        <div className={cn('min-h-0 flex-1 overflow-y-auto px-5 py-4', bodyClassName)}>{children}</div>
+        <div className={cn('min-h-0 flex-1 overflow-y-auto px-4 py-3 sm:px-5 sm:py-4', bodyClassName)}>{children}</div>
         {footer && (
-          <footer className="flex flex-wrap items-center justify-end gap-3 border-t border-border bg-surface-2/60 px-5 py-4">
+          // Stacked full-width buttons on phones (primary action last = on top),
+          // a right-aligned row from `sm` up.
+          <footer
+            className={cn(
+              'flex flex-col-reverse gap-2 border-t border-border bg-surface-2/60 px-4 py-3',
+              'sm:flex-row sm:flex-wrap sm:items-center sm:justify-end sm:gap-3 sm:px-5 sm:py-4',
+              'max-sm:*:w-full',
+            )}
+          >
             {footer}
           </footer>
         )}

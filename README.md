@@ -29,11 +29,12 @@ settings — works with Wi-Fi off, no backend and no internet.
 16. [Thermal printer setup](#thermal-printer-setup)
 17. [Bangla / English localization](#bangla--english-localization)
 18. [Theme configuration](#theme-configuration)
-19. [Tables and guests](#tables-and-guests)
-20. [Keyboard shortcuts](#keyboard-shortcuts)
-21. [Testing](#testing)
-22. [Security](#security)
-23. [Troubleshooting](#troubleshooting)
+19. [Screen sizes](#screen-sizes)
+20. [Tables and guests](#tables-and-guests)
+21. [Keyboard shortcuts](#keyboard-shortcuts)
+22. [Testing](#testing)
+23. [Security](#security)
+24. [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -42,7 +43,7 @@ settings — works with Wi-Fi off, no backend and no internet.
 | Area | What it does |
 | --- | --- |
 | **POS** | Split screen (≈65 % menu / 35 % cart), large touch cards with real food photos, category tabs, instant search by Bangla name, English name or item code, unavailable items blocked, quantity badges on cards. |
-| **Cart** | One compact row per line (− qty + · name, unit price, kitchen status, note · line total), so 5 or more lines stay visible on a 1366 × 768 screen (6–7 with compact density); at quantity 1 the − button removes the line; per-line bilingual kitchen notes (quick presets + free text), same item + same customization merges, fixed or percentage discount (never above the subtotal), tax, live totals in a two-row summary. Notifications appear at the bottom-left, over the menu, never over the cart. |
+| **Cart** | One compact row per line (− qty + · name, unit price, kitchen status, note · line total), so 5 or more lines stay visible on a 1366 × 768 screen (6–7 with compact density); at quantity 1 the − button removes the line; per-line bilingual kitchen notes (quick presets + free text), same item + same customization merges, fixed or percentage discount (never above the subtotal), tax, live totals in a two-row summary. Notifications appear at the bottom-left, over the menu, never over the cart (at the top on a phone-sized window). |
 | **Order types** | Dine-in (table required), takeaway, delivery (customer name, phone, address printed on receipt and KOT). |
 | **Tables** | 20 seeded tables, each drawn as a real table — chairs for every seat and the seated guests with their plates — in **3D** (isometric) or from above; available / occupied / reserved / waiting-for-bill shown with color **and** icon **and** text; guests / seats and time at the table; start, open, reserve, request bill, open bill; never two active orders on one table. |
 | **Guests** | Number of guests per dine-in order (asked when a table is seated — one tap, optional — or taken from the reservation); editable from the cart; drawn on the table and printed on the KOT and receipt. |
@@ -54,6 +55,7 @@ settings — works with Wi-Fi off, no backend and no internet.
 | **Reports** | Date ranges (today, yesterday, last 7/30 days, this/last month, custom); KPIs with change vs the previous period; daily/hourly/monthly sales chart; busiest hours; payment methods, order types, categories, cashiers; top-selling items with photos; sales summary; chart ⇄ table view; printable thermal sales report; CSV export. |
 | **Shift** | Open (cashier + opening cash), live totals (revenue, orders, cash/card/mobile, tax, discount, average, expected drawer cash), close with counted cash and over/short, printable report, history. |
 | **Settings** | Restaurant (bilingual), tax, currency (BDT, USD, EUR, GBP, INR), language, theme, number format (English or Bangla digits), **text size, card size, accent color, layout density and table view with a live preview**, images, sounds, guest count prompt, printers, menu & category management (with local images), table management, JSON backup / import, demo reset, sample sales for demonstrations, developer details, photo credits. |
+| **Screen sizes** | One layout that works from a 360 px phone to a wide monitor — see [Screen sizes](#screen-sizes). The navigation becomes a bottom bar, the cart a slide-over drawer, dialogs bottom sheets, and wide tables turn into card lists. |
 | **Localization** | Every UI string translated; typed keys; Bangla default; dates/times per locale; optional Bangla numerals; bundled Bangla font. |
 | **Keyboard & a11y** | F1–F9 shortcuts (F6 Reports), Ctrl/Cmd+K search, Ctrl + / Ctrl − / Ctrl 0 text size, Esc closes dialogs, focus-trapped accessible dialogs, ARIA labels, visible focus, touch-sized targets. |
 
@@ -413,6 +415,23 @@ folder without asking (useful for testing without paper).
   - *Reset to defaults* puts all four back.
 - *Show item images*, *Sound effects* and *Ask for the number of guests* are under Interface
   preferences.
+
+## Screen sizes
+
+The whole application is responsive: the same build runs on a phone-sized window, a tablet and
+a desktop monitor. The window may be resized down to **360 × 520**.
+
+| Width | Layout |
+| --- | --- |
+| **< 768 px** (phones, small windows) | Navigation moves to a **bottom bar** with six tabs; the header keeps the restaurant name, the shift dot, a language toggle button and the theme button; pages use tighter padding; dialogs open as **bottom sheets** with full-width stacked buttons; toasts appear under the header (a bottom toast would cover a sheet's buttons); order history and shift history become **card lists** instead of wide tables; filter chips and the settings sections scroll sideways. |
+| **768–1023 px** (tablets) | The icon **side rail** returns; the POS cart is still a slide-over drawer opened from the floating cart button; report cards and settings rows use two columns. |
+| **≥ 1024 px** (`lg`) | The POS shows the menu and the cart side by side; order and shift history show their full tables; the settings sections list becomes a column beside the content. |
+| **≥ 1280 px** (`xl`) and up | The report grids widen to three columns, KPI tiles to six at `2xl`. |
+
+Menu and table cards size themselves fluidly between a phone minimum and the desktop width, on
+top of the *Card size* preference, so a phone shows two menu columns and a wide monitor shows
+six without any setting change. Nothing is hidden that is not available elsewhere: what a narrow
+screen drops (the clock, the cashier name, the top-items share bar) is on the page it belongs to.
 
 ## Tables and guests
 

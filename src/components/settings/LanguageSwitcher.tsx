@@ -1,5 +1,6 @@
 import { Languages } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { IconButton } from '@/components/common/IconButton';
 import { SegmentedControl } from '@/components/common/SegmentedControl';
 import { LANGUAGES } from '@/config/app.config';
 import { message } from '@/i18n/keys';
@@ -44,5 +45,30 @@ export function LanguageSwitcher({ size = 'sm', showIcon = false, fullWidth = fa
         }))}
       />
     </div>
+  );
+}
+
+/**
+ * The header's language control on narrow screens: one button that switches
+ * to the other language (the full switcher needs more width than a phone
+ * header has to spare).
+ */
+export function LanguageToggleButton({ className }: { className?: string }) {
+  const { t } = useTranslation();
+  const language = useSettingsStore((state) => state.settings.language);
+  const setLanguage = useSettingsStore((state) => state.setLanguage);
+  const next = LANGUAGES.find((option) => option.code !== language) ?? LANGUAGES[0]!;
+
+  return (
+    <span className={className}>
+      <IconButton
+        label={t('language.switchTo', { language: next.nativeName })}
+        icon={<Languages className="size-5" aria-hidden />}
+        onClick={() => {
+          setLanguage(next.code).catch((error: unknown) => toast.error(message(getErrorMessageKey(error))));
+        }}
+        tooltipSide="bottom-end"
+      />
+    </span>
   );
 }

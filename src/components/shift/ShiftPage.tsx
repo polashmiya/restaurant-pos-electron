@@ -66,7 +66,7 @@ export function ShiftPage() {
         }
       />
 
-      <div className="min-h-0 flex-1 space-y-6 overflow-y-auto p-6">
+      <div className="min-h-0 flex-1 space-y-5 overflow-y-auto p-4 sm:space-y-6 sm:p-6">
         {shift ? (
           <ShiftSummary shift={shift} />
         ) : (

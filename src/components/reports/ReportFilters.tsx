@@ -19,22 +19,28 @@ export function ReportFilters() {
   const toId = useId();
   const today = formatIsoDay(new Date());
   const dateClass = cn(
-    'min-h-10 w-44 rounded-control border border-border bg-surface-2 px-3 text-sm text-fg',
+    'min-h-10 w-full min-w-0 rounded-control border border-border bg-surface-2 px-3 text-sm text-fg sm:w-44',
     'transition-colors duration-150 hover:border-border-strong',
     'focus:border-primary focus:outline-2 focus:outline-offset-0 focus:outline-primary/40',
   );
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <SegmentedControl<ReportRangePreset>
-        label={t('reports.dateRange')}
-        size="sm"
-        value={preset}
-        onValueChange={setPreset}
-        options={PRESETS.map((value) => ({ value, label: t(`reports.range.${value}`) }))}
-      />
+    // `basis` is the width the presets want: while it fits beside whatever
+    // follows (the sample-data badge) they share a row, otherwise that wraps.
+    <div className="flex min-w-0 grow basis-[34rem] flex-wrap items-center gap-3">
+      {/* Seven presets do not fit on a phone — they scroll sideways instead. */}
+      <div className="scrollbar-none -mx-1 flex max-w-full overflow-x-auto px-1 py-1">
+        <SegmentedControl<ReportRangePreset>
+          label={t('reports.dateRange')}
+          size="sm"
+          value={preset}
+          onValueChange={setPreset}
+          options={PRESETS.map((value) => ({ value, label: t(`reports.range.${value}`) }))}
+          className="shrink-0"
+        />
+      </div>
       {preset === 'custom' && (
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="grid w-full grid-cols-[auto_minmax(0,1fr)] items-center gap-2 sm:flex sm:w-auto sm:flex-wrap">
           <label htmlFor={fromId} className="text-sm font-semibold text-fg-muted">
             {t('reports.from')}
           </label>

@@ -37,7 +37,7 @@ export function TableGrid({ filter }: { filter: TableFilter }) {
   return (
     <ul
       aria-label={t('a11y.tableGrid')}
-      className="grid grid-cols-[repeat(auto-fill,minmax(calc(12.5rem*var(--app-card-scale)),1fr))] gap-4"
+      className="grid grid-cols-[repeat(auto-fill,minmax(calc(clamp(9.5rem,26vw,12.5rem)*var(--app-card-scale)),1fr))] gap-3 sm:gap-4"
     >
       {visible.map((table) => (
         <li key={table.id} className="relative">

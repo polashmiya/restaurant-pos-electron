@@ -47,8 +47,10 @@ export const APP_CONFIG = {
   window: {
     width: 1366,
     height: 800,
-    minWidth: 1024,
-    minHeight: 640,
+    /* The layout is responsive down to a phone-sized window, so the window may
+       be made much smaller than the default without the UI breaking. */
+    minWidth: 360,
+    minHeight: 520,
     /** Background painted before the UI loads (matches theme.css bg). */
     backgroundDark: '#0e1116',
     backgroundLight: '#eef1f5',

@@ -63,14 +63,19 @@ function ItemsList() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-3">
-        <SearchInput value={query} onValueChange={setQuery} label={t('settings.menu.searchItems')} className="min-w-64 flex-1" />
+      <div className="flex flex-wrap gap-2 sm:gap-3">
+        <SearchInput
+          value={query}
+          onValueChange={setQuery}
+          label={t('settings.menu.searchItems')}
+          className="w-full sm:w-auto sm:min-w-64 sm:flex-1"
+        />
         <Select
           aria-label={t('settings.menu.category')}
           value={categoryId}
           onValueChange={setCategoryId}
           options={[{ value: 'all', label: t('settings.menu.allCategories') }, ...categories.map((category) => ({ value: category.id, label: format.text(category.name) }))]}
-          containerClassName="min-w-52"
+          containerClassName="min-w-0 flex-1 sm:min-w-52 sm:flex-none"
         />
         <Button variant="primary" icon={<Plus className="size-5" aria-hidden />} onClick={() => setEditing({ mode: 'open' })} disabled={categories.length === 0}>
           {t('settings.menu.addItem')}
@@ -88,7 +93,9 @@ function ItemsList() {
             const Icon = (category && CATEGORY_ICONS[category.icon]) || FALLBACK_CATEGORY_ICON;
             const name = format.text(item.name);
             return (
-              <li key={item.id} className="flex items-center gap-3 px-3 py-2">
+              // Phones: photo and name on the first line, price, availability
+              // and the row's buttons on the second.
+              <li key={item.id} className="flex flex-wrap items-center gap-x-3 gap-y-2 px-3 py-2">
                 <span className={cn('grid size-12 shrink-0 place-items-center overflow-hidden rounded-lg', tint.surface)}>
                   <ItemImage
                     src={item.image}
@@ -96,30 +103,32 @@ function ItemsList() {
                     fallback={<Icon className={cn('size-6', tint.text)} aria-hidden />}
                   />
                 </span>
-                <div className="min-w-0 flex-1">
+                <div className="min-w-0 flex-1 basis-24">
                   <p className="truncate font-semibold">
                     {item.name.bn} <span className="text-fg-muted">/ {item.name.en}</span>
                   </p>
-                  <p className="text-sm text-fg-muted">
+                  <p className="truncate text-sm text-fg-muted">
                     {item.code} · {category ? format.text(category.name) : '—'}
                   </p>
                 </div>
-                <span className="w-28 text-end font-bold tabular-nums">{format.currency(item.price)}</span>
-                <button
-                  type="button"
-                  role="switch"
-                  aria-checked={item.isAvailable}
-                  aria-label={item.isAvailable ? t('settings.menu.markUnavailable', { name }) : t('settings.menu.markAvailable', { name })}
-                  onClick={() => void toggle(item)}
-                  className={cn(
-                    'min-h-10 min-w-28 rounded-full px-3 text-sm font-semibold',
-                    item.isAvailable ? 'bg-success/15 text-success-text' : 'bg-danger/15 text-danger-text',
-                  )}
-                >
-                  {item.isAvailable ? t('settings.menu.available') : t('pos.unavailable')}
-                </button>
-                <IconButton label={t('common.edit')} icon={<Pencil className="size-5" aria-hidden />} onClick={() => setEditing({ mode: 'open', value: item })} showTooltip={false} />
-                <IconButton label={t('common.delete')} icon={<Trash className="size-5" aria-hidden />} variant="danger-soft" onClick={() => void remove(item)} showTooltip={false} />
+                <span className="shrink-0 text-end font-bold tabular-nums sm:w-28">{format.currency(item.price)}</span>
+                <div className="flex w-full min-w-0 items-center justify-end gap-2 sm:w-auto sm:gap-3">
+                  <button
+                    type="button"
+                    role="switch"
+                    aria-checked={item.isAvailable}
+                    aria-label={item.isAvailable ? t('settings.menu.markUnavailable', { name }) : t('settings.menu.markAvailable', { name })}
+                    onClick={() => void toggle(item)}
+                    className={cn(
+                      'min-h-10 min-w-0 truncate rounded-full px-3 text-sm font-semibold sm:min-w-28',
+                      item.isAvailable ? 'bg-success/15 text-success-text' : 'bg-danger/15 text-danger-text',
+                    )}
+                  >
+                    {item.isAvailable ? t('settings.menu.available') : t('pos.unavailable')}
+                  </button>
+                  <IconButton label={t('common.edit')} icon={<Pencil className="size-5" aria-hidden />} onClick={() => setEditing({ mode: 'open', value: item })} showTooltip={false} />
+                  <IconButton label={t('common.delete')} icon={<Trash className="size-5" aria-hidden />} variant="danger-soft" onClick={() => void remove(item)} showTooltip={false} />
+                </div>
               </li>
             );
           })}
@@ -172,19 +181,21 @@ function CategoriesList() {
           const Icon = CATEGORY_ICONS[category.icon] ?? FALLBACK_CATEGORY_ICON;
           const tint = CATEGORY_TINTS[category.color];
           return (
-            <li key={category.id} className="flex items-center gap-3 px-3 py-2">
+            <li key={category.id} className="flex flex-wrap items-center gap-x-3 gap-y-2 px-3 py-2">
               <span className={cn('grid size-12 shrink-0 place-items-center rounded-lg', tint.surface)}>
                 <Icon className={cn('size-6', tint.text)} aria-hidden />
               </span>
-              <div className="min-w-0 flex-1">
+              <div className="min-w-0 flex-1 basis-32">
                 <p className="truncate font-semibold">
                   {category.name.bn} <span className="text-fg-muted">/ {category.name.en}</span>
                 </p>
                 <p className="text-sm text-fg-muted">{t('settings.menu.itemCount', { count: countByCategory.get(category.id) ?? 0 })}</p>
               </div>
-              <span className="text-sm text-fg-muted tabular-nums">#{format.number(category.sortOrder)}</span>
-              <IconButton label={t('common.edit')} icon={<Pencil className="size-5" aria-hidden />} onClick={() => setEditing({ mode: 'open', value: category })} showTooltip={false} />
-              <IconButton label={t('common.delete')} icon={<Trash className="size-5" aria-hidden />} variant="danger-soft" onClick={() => void remove(category)} showTooltip={false} />
+              <div className="flex w-full items-center justify-end gap-2 sm:w-auto sm:gap-3">
+                <span className="text-sm text-fg-muted tabular-nums">#{format.number(category.sortOrder)}</span>
+                <IconButton label={t('common.edit')} icon={<Pencil className="size-5" aria-hidden />} onClick={() => setEditing({ mode: 'open', value: category })} showTooltip={false} />
+                <IconButton label={t('common.delete')} icon={<Trash className="size-5" aria-hidden />} variant="danger-soft" onClick={() => void remove(category)} showTooltip={false} />
+              </div>
             </li>
           );
         })}

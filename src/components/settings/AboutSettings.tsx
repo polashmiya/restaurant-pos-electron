@@ -72,9 +72,9 @@ export function AboutSettings() {
   return (
     <div className="space-y-6">
       <SettingsSection title={t('settings.about.title')} icon={<Info className="size-5" aria-hidden />}>
-        <div className="flex items-center gap-4">
+        <div className="flex items-start gap-4 sm:items-center">
           <AppLogo size="lg" />
-          <div>
+          <div className="min-w-0">
             <p className="text-xl font-bold">{APP_CONFIG.name}</p>
             <p className="text-fg-muted">{APP_CONFIG.description}</p>
             <p className="text-sm text-fg-muted">
@@ -98,11 +98,13 @@ export function AboutSettings() {
           >
             {developer.initials}
           </span>
-          <dl className="min-w-0 flex-1 space-y-0.5">
+          {/* `basis` keeps the copy button on its own line on a phone instead of
+              squeezing the name to nothing. */}
+          <dl className="min-w-0 flex-1 basis-48 space-y-0.5">
             <dt className="sr-only">{t('common.name')}</dt>
-            <dd className="text-xl font-bold selectable">{developer.name}</dd>
+            <dd className="truncate text-xl font-bold selectable">{developer.name}</dd>
             <dt className="sr-only">{t('settings.about.designation')}</dt>
-            <dd className="text-fg-muted">{format.text(developer.designation)}</dd>
+            <dd className="truncate text-fg-muted">{format.text(developer.designation)}</dd>
             <dt className="sr-only">{t('settings.about.email')}</dt>
             <dd className="flex min-w-0 items-center gap-2 pt-1 text-sm">
               <Mail className="size-4 shrink-0 text-primary-text" aria-hidden />

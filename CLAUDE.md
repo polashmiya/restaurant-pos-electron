@@ -42,7 +42,10 @@ Useful env vars: `POS_USER_DATA_DIR=<dir>` (isolated data folder), `POS_PRINT_TO
 4. Persisted data shape changed → schema migration + test (see recipe below).
 5. New behaviour covered by a unit test; README updated if a user-visible feature changed.
 6. For visual changes, build and look at it (screenshot the running app) in dark **and** light
-   theme, Bangla **and** English, at 1366×768.
+   theme, Bangla **and** English, at 1366×768 **and** at 360×740 (nothing may overflow
+   sideways). Resize the Electron window from a Playwright script with a CDP
+   `Emulation.setDeviceMetricsOverride` — `BrowserWindow.setContentSize` fights the
+   maximize-on-launch.
 
 ## Map of the code
 
@@ -101,6 +104,18 @@ needs must be DOM-free and added to that list.
   controls via `accent-color`, text selection). Pixel-based drawings (the SVG column chart)
   multiply their sizes by `useTextScale()`. `rememberLook()` keeps a copy in localStorage so
   `main.tsx` paints the loading screen in the last theme/accent/size before settings load.
+- **The layout is responsive from 360 px up.** Breakpoints are Tailwind's defaults; the two that
+  change the shell are `md` (the navigation switches between the bottom bar and the side rail —
+  `Sidebar` is one `<nav>` that changes shape, never two) and `lg` (the POS cart stops being a
+  drawer; wide tables stop being card lists). `theme.css` sets `--app-sidebar-width`,
+  `--app-bottom-nav-height` and `--app-header-height` per breakpoint; anything positioned against
+  the app chrome (toasts, the floating cart button) reads those instead of hard-coding a size.
+  Page bodies are `p-4 sm:p-6`, `Card` is `p-4 sm:p-5`, dialogs are bottom sheets below `sm`.
+  A table wider than the screen gets a card list for narrow widths (`lg:hidden` list +
+  `hidden lg:table` table), never a horizontal scroll as the only option. Card grids size
+  themselves with `minmax(calc(clamp(<phone>,<vw>,<desktop>)*var(--app-card-scale)),1fr)` rather
+  than a breakpoint ladder. `cn()` does not merge classes, so express a responsive override as a
+  variant of the same property (`hidden sm:block`) and never as two competing base classes.
 - **Shared building blocks:** `PageHeader` (every page's header bar), `Notice` (inline
   info/warning boxes), `Kbd` (`tone="inherit"` on coloured buttons), `Modal`, `IconButton`,
   `SegmentedControl`. Reuse them instead of copying class strings.

@@ -116,6 +116,7 @@
   --spacing-touch: var(--app-touch-min);
   --spacing-sidebar: var(--app-sidebar-width);
   --spacing-header: var(--app-header-height);
+  --spacing-bottom-nav: var(--app-bottom-nav-height);
 }
 
 @layer base {

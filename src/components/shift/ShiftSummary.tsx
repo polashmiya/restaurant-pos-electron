@@ -19,15 +19,15 @@ export function ShiftSummary({ shift }: { shift: Shift }) {
 
   return (
     <div className="space-y-5">
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">
         <StatCard emphasis label={t('shift.totalRevenue')} value={format.currency(shift.totalSales)} icon={<TrendingUp />} tone="success" />
         <StatCard label={t('shift.orderCount')} value={format.number(shift.orderCount)} icon={<ReceiptText />} />
         <StatCard label={t('shift.averageOrder')} value={format.currency(calculateAverageOrder(shift))} icon={<Calculator />} />
         <StatCard label={t('shift.expectedCash')} value={format.currency(calculateExpectedCash(shift))} icon={<Wallet />} tone="warning" />
       </div>
 
-      <div className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
-        <section aria-label={t('shift.paymentBreakdown')} className="rounded-card border border-border bg-surface p-5">
+      <div className="grid gap-3 sm:gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <section aria-label={t('shift.paymentBreakdown')} className="rounded-card border border-border bg-surface p-4 sm:p-5">
           <h3 className="mb-4 text-lg font-bold">{t('shift.paymentBreakdown')}</h3>
           <ul className="space-y-4">
             {breakdown.map(({ key, label, value, icon: Icon, bar }) => {
@@ -60,7 +60,7 @@ export function ShiftSummary({ shift }: { shift: Shift }) {
           </ul>
         </section>
 
-        <div className="grid gap-4">
+        <div className="grid gap-3 sm:gap-4">
           <StatCard label={t('shift.taxCollected')} value={format.currency(shift.taxCollected)} icon={<Landmark />} />
           <StatCard label={t('shift.discountGiven')} value={format.currency(shift.discountTotal)} icon={<BadgePercent />} />
           <StatCard label={t('shift.openingCash')} value={format.currency(shift.openingCash)} icon={<Banknote />} />

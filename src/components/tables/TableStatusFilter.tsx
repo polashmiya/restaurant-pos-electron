@@ -23,7 +23,7 @@ export function TableStatusFilter({ value, onChange }: { value: TableFilter; onC
       aria-pressed={value === filter}
       onClick={() => onChange(filter)}
       className={cn(
-        'inline-flex min-h-touch items-center gap-2 rounded-full border-2 px-4 text-sm font-semibold transition-colors',
+        'inline-flex min-h-touch shrink-0 items-center gap-2 rounded-full border-2 px-3 text-sm font-semibold transition-colors sm:px-4',
         value === filter ? 'border-primary bg-primary/15' : 'border-border bg-surface hover:bg-surface-2',
       )}
     >
@@ -34,7 +34,16 @@ export function TableStatusFilter({ value, onChange }: { value: TableFilter; onC
   );
 
   return (
-    <div role="group" aria-label={t('tables.legend')} className="flex flex-wrap gap-2">
+    // Phones scroll the chips sideways instead of stacking them into rows that
+    // would eat the height the floor plan needs.
+    <div
+      role="group"
+      aria-label={t('tables.legend')}
+      className={cn(
+        'scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 pb-0.5',
+        'sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:pb-0',
+      )}
+    >
       {chip('all', t('tables.filterAll'), total, <LayoutGrid className="size-4" aria-hidden />, 'text-fg-muted')}
       {TABLE_STATUSES.map((status) => {
         const visual = TABLE_STATUS_VISUALS[status];

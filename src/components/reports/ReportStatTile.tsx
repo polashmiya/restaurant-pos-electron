@@ -41,7 +41,7 @@ export function ReportStatTile({
   return (
     <div
       className={cn(
-        'flex min-w-0 flex-col gap-2 rounded-card border p-4',
+        'flex min-w-0 flex-col gap-2 rounded-card border p-3 sm:p-4',
         emphasis ? 'border-primary/40 bg-primary/10' : 'border-border bg-surface',
       )}
     >
@@ -51,7 +51,9 @@ export function ReportStatTile({
         </span>
         <span className="truncate">{label}</span>
       </div>
-      <p className={cn('leading-tight font-extrabold break-words text-fg', emphasis ? 'text-3xl' : 'text-2xl')}>{value}</p>
+      <p className={cn('leading-tight font-extrabold break-words text-fg', emphasis ? 'text-xl sm:text-3xl' : 'text-lg sm:text-2xl')}>
+        {value}
+      </p>
       {delta && (
         <p className="flex flex-wrap items-center gap-x-1.5 text-xs text-fg-muted">
           {delta.change !== null && (

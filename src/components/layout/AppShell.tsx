@@ -39,9 +39,14 @@ export function AppShell() {
   return (
     <div className="flex h-full flex-col bg-bg text-fg">
       <Header />
-      <div className="flex min-h-0 flex-1">
+      {/*
+       * The navigation comes first in the document so it is reached before the
+       * page content. `flex-col-reverse` draws it under the page on phones (a
+       * bottom bar); from `md` up it is the side rail again.
+       */}
+      <div className="flex min-h-0 flex-1 flex-col-reverse md:flex-row">
         <Sidebar />
-        <main className="min-w-0 flex-1 overflow-hidden">
+        <main className="relative min-h-0 min-w-0 flex-1 overflow-hidden">
           <ErrorBoundary compact key={activePage}>
             <Page page={activePage} />
           </ErrorBoundary>

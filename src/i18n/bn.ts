@@ -111,6 +111,7 @@ export const bn: TranslationSchema = {
     label: 'ভাষা',
     bn: 'বাংলা',
     en: 'English',
+    switchTo: '{{language}} ভাষায় পরিবর্তন করুন',
   },
 
   theme: {

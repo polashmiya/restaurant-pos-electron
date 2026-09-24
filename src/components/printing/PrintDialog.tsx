@@ -66,7 +66,7 @@ export function PrintDialog({ document, title, description, successKey, printLab
         </>
       }
     >
-      <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_auto]">
+      <div className="grid gap-4 sm:gap-5 md:grid-cols-[minmax(0,1fr)_auto]">
         <PrintOptions job={job} />
         <DocumentPreview document={document} target={job.target} />
       </div>

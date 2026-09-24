@@ -29,36 +29,57 @@ function NavButton({ item }: { item: NavItem }) {
   const label = t(`nav.${item.page}`);
 
   return (
-    <Tooltip label={label} shortcut={item.shortcut} side="end" className="w-full">
+    // The tooltip only helps the side rail; in the bottom bar the label is
+    // already under the icon and the bubble would cover the next tab.
+    <Tooltip
+      label={label}
+      shortcut={item.shortcut}
+      side="end"
+      className="flex-1 md:w-full md:flex-none"
+      bubbleClassName="max-md:hidden"
+    >
       <button
         type="button"
         onClick={() => navigate(item.page)}
         aria-current={active ? 'page' : undefined}
         className={cn(
-          'relative flex min-h-[4.5rem] w-full flex-col items-center justify-center gap-1 rounded-control px-1',
-          'text-xs font-semibold transition-colors duration-150',
+          'relative flex w-full flex-col items-center justify-center gap-0.5 rounded-control px-1',
+          'min-h-14 text-[0.6875rem] font-semibold transition-colors duration-150',
+          'md:min-h-[4.5rem] md:gap-1 md:text-xs',
           active ? 'bg-primary/15 text-primary-text' : 'text-fg-muted hover:bg-surface-2 hover:text-fg',
         )}
       >
-        {active && <span aria-hidden className="absolute inset-y-3 start-0 w-1 rounded-e-full bg-primary" />}
-        <Icon className="size-6" aria-hidden />
+        {active && (
+          <span
+            aria-hidden
+            className="absolute inset-x-3 top-0 h-1 rounded-b-full bg-primary md:inset-x-auto md:inset-y-3 md:start-0 md:h-auto md:w-1 md:rounded-e-full md:rounded-b-none"
+          />
+        )}
+        <Icon className="size-5 md:size-6" aria-hidden />
         <span className="line-clamp-1 text-center">{label}</span>
       </button>
     </Tooltip>
   );
 }
 
+/**
+ * One navigation that changes shape: a bottom bar with evenly split tabs on
+ * phones and small windows, the side rail from `md` up.
+ */
 export function Sidebar() {
   const { t } = useTranslation();
   return (
     <nav
       aria-label={t('nav.mainNavigation')}
-      className="flex w-sidebar shrink-0 flex-col gap-1 border-e border-border bg-surface p-2 no-print"
+      className={cn(
+        'flex shrink-0 items-stretch gap-0.5 border-t border-border bg-surface px-1 pt-0.5 pb-[max(0.125rem,env(safe-area-inset-bottom))] no-print',
+        'md:w-sidebar md:flex-col md:gap-1 md:border-t-0 md:border-e md:p-2',
+      )}
     >
       {MAIN_ITEMS.map((item) => (
         <NavButton key={item.page} item={item} />
       ))}
-      <div className="flex-1" />
+      <div className="hidden flex-1 md:block" />
       <NavButton item={SETTINGS_ITEM} />
     </nav>
   );

@@ -79,18 +79,18 @@ export function PaymentModal({ onClose }: { onClose: () => void }) {
             disabled={!canComplete}
             loading={processing}
             icon={processing ? undefined : <CircleCheckBig className="size-5" aria-hidden />}
-            className="min-w-56"
+            className="sm:min-w-56"
           >
             {processing ? t('payment.processing') : t('payment.complete')}
           </Button>
         </>
       }
     >
-      <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_16rem]" onKeyDown={handleKeyDown}>
+      <div className="grid gap-4 sm:gap-5 md:grid-cols-[minmax(0,1fr)_16rem]" onKeyDown={handleKeyDown}>
         <div className="space-y-4">
-          <div className="rounded-card border-2 border-primary/40 bg-primary/10 px-5 py-4 text-center">
+          <div className="rounded-card border-2 border-primary/40 bg-primary/10 px-4 py-3 text-center sm:px-5 sm:py-4">
             <p className="text-sm font-semibold tracking-wide text-fg-muted uppercase">{t('payment.totalDue')}</p>
-            <p className="text-5xl font-extrabold tabular-nums" aria-live="polite">
+            <p className="text-4xl font-extrabold break-words tabular-nums sm:text-5xl" aria-live="polite">
               {format.currency(totals.total)}
             </p>
           </div>
@@ -121,13 +121,13 @@ export function PaymentModal({ onClose }: { onClose: () => void }) {
                 </p>
               </div>
               <dl className="grid grid-cols-2 gap-3">
-                <div className="rounded-card bg-surface-2 p-4">
+                <div className="min-w-0 rounded-card bg-surface-2 p-3 sm:p-4">
                   <dt className="text-sm text-fg-muted">{t('payment.paid')}</dt>
-                  <dd className="text-2xl font-bold tabular-nums">{format.currency(totals.total)}</dd>
+                  <dd className="text-xl font-bold break-words tabular-nums sm:text-2xl">{format.currency(totals.total)}</dd>
                 </div>
-                <div className="rounded-card bg-surface-2 p-4">
+                <div className="min-w-0 rounded-card bg-surface-2 p-3 sm:p-4">
                   <dt className="text-sm text-fg-muted">{t('payment.change')}</dt>
-                  <dd className="text-2xl font-bold tabular-nums">{format.currency(0)}</dd>
+                  <dd className="text-xl font-bold break-words tabular-nums sm:text-2xl">{format.currency(0)}</dd>
                 </div>
               </dl>
               <Input

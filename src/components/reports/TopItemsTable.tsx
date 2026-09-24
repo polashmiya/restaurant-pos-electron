@@ -26,7 +26,9 @@ export function TopItemsTable({ items, itemsSold, format }: { items: readonly It
             <th scope="col" className="pb-2 text-end font-semibold">
               {t('reports.columns.sales')}
             </th>
-            <th scope="col" className="w-36 ps-4 pb-2 text-end font-semibold">
+            {/* Phones drop the photo and the share bar — rank, name, quantity
+                and sales are what the table is read for. */}
+            <th scope="col" className="hidden w-36 ps-4 pb-2 text-end font-semibold sm:table-cell">
               {t('reports.columns.share')}
             </th>
           </tr>
@@ -39,12 +41,14 @@ export function TopItemsTable({ items, itemsSold, format }: { items: readonly It
                 <td className="py-2 font-semibold text-fg-muted tabular-nums">{format.number(index + 1)}</td>
                 <td className="py-2">
                   <div className="flex min-w-0 items-center gap-3">
-                    <span className="grid h-10 w-16 shrink-0 place-items-center overflow-hidden rounded-lg bg-surface-3">
-                      <ItemImage
-                        src={item.image}
-                        className="size-full object-cover"
-                        fallback={<UtensilsCrossed className="size-4 text-fg-subtle" aria-hidden />}
-                      />
+                    <span className="hidden shrink-0 sm:block">
+                      <span className="grid h-10 w-16 place-items-center overflow-hidden rounded-lg bg-surface-3">
+                        <ItemImage
+                          src={item.image}
+                          className="size-full object-cover"
+                          fallback={<UtensilsCrossed className="size-4 text-fg-subtle" aria-hidden />}
+                        />
+                      </span>
                     </span>
                     <span className="min-w-0">
                       <span className="block truncate font-semibold text-fg">{format.text(item.name)}</span>
@@ -54,7 +58,7 @@ export function TopItemsTable({ items, itemsSold, format }: { items: readonly It
                 </td>
                 <td className="py-2 text-end font-semibold tabular-nums">{format.number(item.quantity)}</td>
                 <td className="py-2 text-end whitespace-nowrap tabular-nums">{format.currency(item.sales)}</td>
-                <td className="py-2 ps-4">
+                <td className="hidden py-2 ps-4 sm:table-cell">
                   <div className="flex items-center justify-end gap-2">
                     <div className="h-2 w-16 rounded-e-[4px] bg-chart-1/12" aria-hidden>
                       <div

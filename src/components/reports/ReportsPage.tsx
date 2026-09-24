@@ -137,7 +137,7 @@ export function ReportsPage() {
       />
 
       <div className="min-h-0 flex-1 overflow-y-auto">
-        <div className="space-y-5 p-6">
+        <div className="space-y-4 p-4 sm:space-y-5 sm:p-6">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <ReportFilters />
             {report.includesSample && (
@@ -272,7 +272,7 @@ function ReportContent({
 
   return (
     <>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 2xl:grid-cols-6">
         <ReportStatTile
           emphasis
           label={t('reports.kpi.sales')}
@@ -313,7 +313,7 @@ function ReportContent({
         />
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-3">
+      <div className="grid gap-4 sm:gap-5 xl:grid-cols-3">
         <ChartCard
           className="xl:col-span-2"
           title={trendTitle}
@@ -372,8 +372,8 @@ function ReportContent({
         </ChartCard>
       </div>
 
-      <div className="grid items-start gap-5 xl:grid-cols-3">
-        <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-1">
+      <div className="grid items-start gap-4 sm:gap-5 xl:grid-cols-3">
+        <div className="grid gap-4 sm:gap-5 lg:grid-cols-2 xl:grid-cols-1">
           <ChartCard title={t('reports.paymentMethods')}>
             <BarList rows={paymentRows} total={totals.sales} formatShare={share} label={t('reports.paymentMethods')} />
           </ChartCard>
@@ -386,11 +386,11 @@ function ReportContent({
         </ChartCard>
       </div>
 
-      <div className="grid items-start gap-5 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="grid items-start gap-4 sm:gap-5 lg:grid-cols-2 xl:grid-cols-3">
         <ChartCard title={t('reports.categories')} description={t('reports.categoriesHint')} className="xl:col-span-2">
           <BarList rows={categoryRows} total={totals.grossSales} formatShare={share} label={t('reports.categories')} />
         </ChartCard>
-        <div className="grid gap-5">
+        <div className="grid gap-4 sm:gap-5">
           <ChartCard title={t('reports.summary')} description={t('reports.summaryHint')}>
             <SalesSummary totals={totals} format={format} />
           </ChartCard>
